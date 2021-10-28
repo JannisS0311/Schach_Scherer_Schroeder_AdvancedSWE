@@ -1,2 +1,2 @@
-# AdvancedSWE
+# Schach
 Repository for Advanced Softwareeng
