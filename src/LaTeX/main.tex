@@ -1,0 +1,234 @@
+%&bericht
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Descr:       Vorlage für Berichte der DHBW-Karlsruhe
+%% Author:      Prof. Dr. Jürgen Vollmer, juergen.vollmer@dhbw-karlsruhe.de
+%% $Id: bericht.tex,v 1.25 2020/03/13 15:07:45 vollmer Exp $
+%%  -*- coding: utf-8 -*-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[
+    ngerman          % neue deutsche Rechtschreibung
+,a4paper          % Papiergrösse
+% ,twoside          % Zweiseitiger Druck (rechts/links)
+% ,10pt             % Schriftgrösse
+%  ,11pt
+,12pt
+,pdftex
+%  ,disable         % Todo-Markierungen auschalten
+]{report}
+
+% Bitte die Codierung Ihrer Dateien auswählen:
+% \usepackage[latin1]{inputenc}    % Für UNIX mit ISO-LATIN-codierten Dateien
+% \usepackage[applemac]{inputenc}  % Für Apple Mac
+% \usepackage[ansinew]{inputenc}   % Für Microsoft Windows
+\usepackage[utf8]{inputenc}        % UTF-8 codierte Dateien
+% Dieses Dokument ist unter Unix erstellt, daher
+% wird diese Input-Codierung benutzt.
+
+\usepackage{bericht}
+\usepackage{graphicx} %Bilder
+\usepackage{wrapfig} %Bilder
+\usepackage{subfig} %Bilder
+\usepackage[bindingoffset=1cm]{geometry} %Rand für die Bindung
+\usepackage{setspace} %Zeilenabstand
+\usepackage{acronym} %Abkürzungen
+\usepackage{biblatex}
+\usepackage{csquotes}
+%\usepackage{apacite}
+\usepackage{paralist}
+\usepackage{longtable}
+\usepackage{booktabs}
+%\usepackage[center]{caption}
+\usepackage{float}
+\usepackage{pgf-pie}
+\usepackage{pdfpages}
+\usepackage{setspace}
+
+
+% Hierdurch werden Schusterjungen und Hurenkinder vermieden, d.h. einzelne Wörter
+% auf der nächsten Seite oder in einer einzigen Zeile.
+% LaTeX kann diese dennoch erzeugen, falls das Layout ansonsten nicht umsetzbar ist.
+% Diese Werte sind aber gute Startwerte.
+\widowpenalty10000
+\clubpenalty10000
+
+
+%%%%%%% Für Quellcodevorlage
+\usepackage{scrhack}                    % Hack zur Verw. von listings in KOMA-Script
+\usepackage{listings}                   % Darstellung von Quellcode
+\usepackage{xcolor}                     % Einfache Verwendung von Farben
+\input{quellcodeStyle}  % Weitere Details sind ausgelagert
+
+\usepackage{algorithm}                  % Für Algorithmen-Umgebung (ähnlich wie lstlistings Umgebung)
+\usepackage{algpseudocode}              % Für Pseudocode. Füge "[noend]" hinzu, wenn du kein "endif",
+% etc. haben willst.
+
+\makeatletter                           % Sorgt dafür, dass man @ in Namen verwenden kann.
+% Ansonsten gibt es in der nächsten Zeile einen Compilefehler.
+\renewcommand{\ALG@name}{Algorithmus}   % Umbenennen von "Algorithm" im Header der Listings.
+\makeatother                            % Zeichen wieder zurücksetzen
+\renewcommand{\lstlistingname}{Listing} % Erlaubt das Umbenennen von "Listing" in anderen Titel.
+
+\usepackage{amssymb}    % Lädt amsfonts und weitere Symbole
+\usepackage{MnSymbol}   % Für Symbole, die in amssymb nicht enthalten sind.
+
+\csname endofdump\endcsname
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Angaben zur Arbeit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Autor}{Jannis Schröder, Annalena Scherer}
+\newcommand{\MatrikelNummer}{ , 7496432}
+\newcommand{\Kursbezeichnung}{TINF19B1}
+
+\newcommand{\FirmenName}{Boehringer Ingelheim}
+\newcommand{\FirmenEndung}{Pharma GmbH \& Co K.G.}
+\newcommand{\FirmenStadt}{88400 Biberach an der Riß}
+\newcommand{\FirmenLogoDeckblatt}{\includegraphics[width=6cm]{Images/BI_Logo.png}}
+
+% Falls es kein Firmenlogo gibt:
+%  \newcommand{\FirmenLogoDeckblatt}{}
+
+%\newcommand{\BetreuerFirma}{Betreuer}
+\newcommand{\BetreuerDHBW}{Daniel Lindner}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Wird auf dem Deckblatt und in der Erklärung benutzt:
+%\newcommand{\Was}{Projekt-/Studien-/Bachleorarbeit}
+%\newcommand{\Was}{Projektarbeit}
+%\newcommand{\Was}{Studienarbeit}
+%\newcommand{\Was}{Bachleorarbeit}
+\newcommand{\Was}{Advanced SWE - Programmentwurf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Titel}{Schachspiel}
+%\newcommand{\Untertitel}{im Rahmen der AdA-Prüfung}
+\newcommand{\AbgabeDatum}{15. Mai 2021}
+
+\newcommand{\Dauer}{25 Wochen}
+
+% \newcommand{\Abschluss}{Bachelor of Engineering}
+\newcommand{\Abschluss}{Bachelor of Science}
+
+\newcommand{\Studiengang}{Informatik / Medizinische Informatik}
+% \newcommand{\Studiengang}{Informatik / Angewandte Informatik}
+
+\hypersetup{%%
+    pdfauthor={\Autor},
+    pdftitle={\Titel},
+    pdfsubject={\Was}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Wenn \includeonly{..} benutzt wird, werden nur diese Kaptitel ausgegeben.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Benutzt man das "biblatex"-Paket, dann muß das hier stehen:
+% siehe auch die mit BIBLATEX markierten Zeilen in bericht.sty
+\bibliography{bericht}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{-2cm}
+            \FirmenLogoDeckblatt\hfill\includegraphics[width=4cm]{Images/dhbw-logo.png}\\[2cm]
+            \vspace*{1cm}
+            {\huge \Titel}\\[0.5cm]
+            %{\huge \Untertitel}\\[1cm]
+            {\Huge\scshape \Was}\\[1cm]
+            {\large für die Prüfung zum}\\[0.5cm]
+            {\Large \Abschluss}\\[0.5cm]
+            {\large des Studienganges \Studiengang}\\[0.5cm]
+            {\large an der}\\[0.5cm]
+            {\large Dualen Hochschule Baden-Württemberg Karlsruhe}\\[0.5cm]
+            {\large von}\\[0.5cm]
+            {\large\bfseries \Autor}\\[1cm]
+            {\large Abgabedatum \AbgabeDatum}
+            \vfill
+        \end{center}
+        \begin{tabular}{l@{\hspace{2cm}}l}
+            %Bearbeitungszeitraum	         & \Dauer 			\\
+            Matrikelnummer                 & \MatrikelNummer  \\
+            Kurs                         & \Kursbezeichnung \\
+            Ausbildungsfirma               & \FirmenName     \\
+            & \FirmenEndung      \\
+            & \FirmenStadt    \\
+            %Betreuer der Ausbildungsfirma	 & \BetreuerFirma		\\
+            Gutachter der Studienakademie  & \BetreuerDHBW    \\
+        \end{tabular}
+    \end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+    \onehalfspacing
+
+    \input{OtherInput/erklaerung}
+    \input{OtherInput/Abstract}
+    \input{OtherInput/Zusammenfassung}
+
+    \newpage
+    \tableofcontents           % Inhaltsverzeichnis hier ausgeben
+    %\listoffigures             % Liste der Abbildungen
+    %\listoftables              % Liste der Tabellen
+    %\lstlistoflistings         % Liste der Listings
+    %\listofequations           % Liste der Formeln
+
+    \input{OtherInput/Abkürzungen}
+
+    \bigskip
+
+    \section*{Anmerkung zu dieser Arbeit}
+    In der vorliegenden Arbeit wird aus Gründen der besseren Lesbarkeit vornehmlich das generische Maskulin verwendet, welches männliche sowie weibliche Personen gleichermaßen einschließt. Ist beispielsweise von Mitarbeitern die Rede, werden damit auch Mitarbeiterinnen angesprochen.\\
+    \input{OtherInput/erklaerung}
+
+    % Jetzt kommt der "eigentliche" Text
+    \input{Chapters/Chapter1}
+
+
+    % Ab hier beginnt der Anhang
+    %\appendix
+    %\part*{\appendixname}
+
+    %\addcontentsline{toc}{chapter}{Index}
+    %\printindex
+
+    \addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+% Haben Sie das "biblatex"-Paket nicht installiert, benutzen Sie folgendes:
+% Ohne das "biblatex"-Paket (s. bericht.sty) produziert folgendes
+% "deutsche" Zitate in Literaturverzeichnissen gemaß der Norm DIN 1505,
+% Teil 2 vom Jan. 1984.
+% Die Zitatmarken werden alphabetisch nach Verfassern
+% sortiert und sind durch abgekürzte Verfasserbuchstaben plus
+% Erscheinungsjahr in eckigen Klammern gekennzeichnet.
+
+% \bibliographystyle{alphadin}
+% \bibliography{bericht}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLATEX
+    %Benutzt man das "biblatex"-Paket, muß man folgendes schreiben:
+    \def\refname{Literaturverzeichnis}
+%\bibliographystyle{apacite}
+    \printbibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\include{changelog}
+
+%\newpage
+%\addcontentsline{toc}{chapter}{Liste der ToDo's}
+%\listoftodos[Liste der ToDo's]
+
+
+\end{document}
