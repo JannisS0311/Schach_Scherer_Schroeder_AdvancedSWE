@@ -1,0 +1,4 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {ngerman}{}\relax 
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Literaturverzeichnis}{7}{chapter*.6}%
