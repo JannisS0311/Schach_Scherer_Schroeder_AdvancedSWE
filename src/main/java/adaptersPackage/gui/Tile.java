@@ -1,6 +1,6 @@
-package gui;
+package adaptersPackage.gui;
 
-import control.*;
+import domainPackage.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class Tile extends JLabel {
     public Tile(Color tileColor, String tileIcon, String pieceColor, Board board, int rowCoordinate, int columnCoordinate) {
         this.setBackground(tileColor);
         this.setIcon(loadIcon(pieceColor + tileIcon));
-        this.piece = setPiece(this.board,this, tileIcon, pieceColor);
+        this.piece = generatePiece(this.board,this, tileIcon, pieceColor);
         this.board = board;
         this.rowCoordinate = rowCoordinate;
         this.columnCoordinate = columnCoordinate;
@@ -38,7 +38,7 @@ public class Tile extends JLabel {
         return icon;
     }
 
-    public Piece setPiece(Board board, Tile tile, String imageIcon, String pieceColorAsString){
+    public Piece generatePiece(Board board, Tile tile, String imageIcon, String pieceColorAsString){
         Color pieceColor = setColorFromString(pieceColorAsString);
         try {
             switch(imageIcon){
@@ -54,6 +54,10 @@ public class Tile extends JLabel {
         catch (Exception e){
             return null;
         }
+    }
+
+    public void setPiece(Piece piece){
+        this.piece = piece;
     }
 
     private Color setColorFromString(String colorName){

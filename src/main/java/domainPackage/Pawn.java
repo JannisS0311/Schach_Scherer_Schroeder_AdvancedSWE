@@ -1,7 +1,7 @@
-package control;
+package domainPackage;
 
-import gui.Board;
-import gui.Tile;
+import adaptersPackage.gui.Board;
+import adaptersPackage.gui.Tile;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,13 +20,15 @@ public class Pawn implements Piece{
     }
 
     @Override
-    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate) {
-        Tile newTile = this.board.getTile(newColumnCoordinate, newRowCoordinate);
+    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate, Board board) {
+        Tile newTile = board.getTile(newRowCoordinate, newColumnCoordinate);
+        String color = (this.pieceColor.toString().equals("java.awt.Color[r=255,g=255,b=255]") ? "WHITE" : "BLACK");
         if (checkIfMoveIsAllowed(newTile)) {
+            board.getTile(newRowCoordinate, newColumnCoordinate).setIcon(loadIcon(color + "Pawn"));
+            board.getTile(newRowCoordinate, newColumnCoordinate).setPiece(this.actualTile.getPiece());
             this.actualTile.removeIcon();
             this.actualTile.removePiece();
-            newTile.setIcon(loadIcon(pieceColor + "Pawn"));
-            newTile.setPiece( this.board, newTile,"Pawn", "WHITE");
+            this.actualTile.setLocation(newRowCoordinate, newColumnCoordinate);
             return true;
         }
         return false;
@@ -39,8 +41,6 @@ public class Pawn implements Piece{
 
     public boolean checkIfMoveIsAllowed(Tile newTile) {
         // normal move, don't beat your enemies piece
-        System.out.println(checkIfMoveIsForwards(newTile));
-        System.out.println(checkIfStepNumberIsAllowed(newTile));
         if (checkIfInTheSameColumn(newTile) && checkIfMoveIsForwards(newTile) && checkIfStepNumberIsAllowed(newTile)) {
             return checkIfNewTileIsEmpty(newTile);
         }
@@ -52,15 +52,10 @@ public class Pawn implements Piece{
     }
 
     private boolean checkIfMoveIsForwards(Tile newTile){
-        System.out.println(pieceColor == Color.WHITE);
-        System.out.println(actualTile.getColumnCoordinate());
-        System.out.println(newTile.getColumnCoordinate());
-        System.out.println(actualTile.getRowCoordinate());
-        System.out.println(newTile.getRowCoordinate());
-        if(pieceColor == Color.BLACK && (actualTile.getColumnCoordinate() > newTile.getColumnCoordinate())){
+        if(pieceColor == Color.BLACK && (actualTile.getRowCoordinate() > newTile.getRowCoordinate())){
             return true;
         }
-        else if(pieceColor == Color.WHITE && (actualTile.getColumnCoordinate() < newTile.getColumnCoordinate())){
+        else if(pieceColor == Color.WHITE && (actualTile.getRowCoordinate() < newTile.getRowCoordinate())){
             return true;
         }
         return false;
@@ -77,29 +72,29 @@ public class Pawn implements Piece{
     }
 
     private boolean checkIfInitiallyTwoSteps(Tile newTile){
-        if(actualTile.getColumnCoordinate() == 0 && newTile.getColumnCoordinate() == 2){
+        if(actualTile.getRowCoordinate() == 1 && newTile.getRowCoordinate() == 3){
             return true;
         }
-        else if(actualTile.getColumnCoordinate() == 7 && newTile.getColumnCoordinate() == 5){
+        else if(actualTile.getRowCoordinate() == 6 && newTile.getRowCoordinate() == 4){
             return true;
         }
         return false;
     }
 
     private boolean checkIfOneStep(Tile newTile){
-        if(actualTile.getColumnCoordinate() == newTile.getColumnCoordinate() + 1){
+        if(actualTile.getRowCoordinate() == newTile.getRowCoordinate() + 1){
             return true;
         }
-        else if(actualTile.getColumnCoordinate() == newTile.getColumnCoordinate() - 1){
+        else if(actualTile.getRowCoordinate() == newTile.getRowCoordinate() - 1){
             return true;
         }
         return false;
     }
 
     private boolean checkIfInTheSameColumn(Tile newTile) {
-        Integer oldYCoordinate = this.actualTile.getColumnCoordinate();
-        Integer newYCoordinate = newTile.getColumnCoordinate();
-        if (oldYCoordinate.equals(newYCoordinate)) {
+        Integer oldColumnNumber = this.actualTile.getColumnCoordinate();
+        Integer newColumnNumber = newTile.getColumnCoordinate();
+        if (oldColumnNumber.equals(newColumnNumber)) {
             return true;
         }
         return false;

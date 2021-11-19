@@ -1,11 +1,9 @@
-package gui;
+package adaptersPackage.gui;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Board extends JFrame {
-
-    private String imagePath = "src/main/resources/chesspieces/";
 
     private Tile[][] tiles = new Tile[8][8];
 
@@ -50,7 +48,7 @@ public class Board extends JFrame {
         for (int rowCounter = 2; rowCounter < 6; rowCounter++) {
             for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
                 tiles[rowCounter][columnCounter] =
-                        new Tile((rowCounter + columnCounter) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), null, null, this, columnCounter, rowCounter);
+                        new Tile((rowCounter + columnCounter) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), null, null, this, rowCounter, columnCounter);
                 this.add(tiles[rowCounter][columnCounter]);
             }
         }
@@ -77,7 +75,7 @@ public class Board extends JFrame {
             rowNumber = 6;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), "Pawn", pieceColor, this, columnCounter, rowNumber);
+            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), "Pawn", pieceColor, Board.this, rowNumber, columnCounter);
             this.add(tiles[rowNumber][columnCounter]);
         }
     }
@@ -90,14 +88,9 @@ public class Board extends JFrame {
             rowNumber = 7;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), pieceOrder[columnCounter], pieceColor, this, columnCounter, rowNumber);
+            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), pieceOrder[columnCounter], pieceColor, Board.this, rowNumber, columnCounter);
             this.add(tiles[rowNumber][columnCounter]);
         }
-    }
-
-    private ImageIcon loadIcon(String fileName) {
-        ImageIcon icon = new ImageIcon(imagePath + fileName + ".png");
-        return icon;
     }
 
     /*public void removePiece(int xCoordinate, int yCoordinate) {

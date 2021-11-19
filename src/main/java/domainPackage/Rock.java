@@ -1,8 +1,9 @@
-package control;
+package domainPackage;
 
-import gui.Board;
-import gui.Tile;
+import adaptersPackage.gui.Board;
+import adaptersPackage.gui.Tile;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Rock implements Piece{
@@ -11,6 +12,8 @@ public class Rock implements Piece{
     Board board;
     Color pieceColor;
 
+    private String imagePath = "src/main/resources/chesspieces/";
+
     public Rock(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
@@ -18,12 +21,23 @@ public class Rock implements Piece{
     }
 
     @Override
-    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate) {
-        Tile newTile = board.getTile(newColumnCoordinate, newRowCoordinate);
+    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate, Board board) {
+        Tile newTile = board.getTile(newRowCoordinate, newColumnCoordinate);
+        String color = (this.pieceColor.toString().equals("java.awt.Color[r=255,g=255,b=255]") ? "WHITE" : "BLACK");
         if (checkIfMoveIsAllowed(newTile)) {
+            board.getTile(newRowCoordinate, newColumnCoordinate).setIcon(loadIcon(color + "Rock"));
+            board.getTile(newRowCoordinate, newColumnCoordinate).setPiece(this.actualTile.getPiece());
+            this.actualTile.removeIcon();
+            this.actualTile.removePiece();
+            this.actualTile.setLocation(newRowCoordinate, newColumnCoordinate);
             return true;
         }
         return false;
+    }
+
+    private ImageIcon loadIcon(String fileName) {
+        ImageIcon icon = new ImageIcon(imagePath + fileName + ".png");
+        return icon;
     }
 
     public boolean checkIfMoveIsAllowed(Tile newTile) {
@@ -35,19 +49,19 @@ public class Rock implements Piece{
         return false;
     }
 
-    private boolean checkIfInTheSameColumn(Tile newTile) {
-        Integer oldColumnCoordinate = this.actualTile.getColumnCoordinate();
-        Integer newColumnCoordinate = newTile.getColumnCoordinate();
-        if (oldColumnCoordinate.equals(newColumnCoordinate)) {
+    private boolean checkIfInTheSameRow(Tile newTile) {
+        Integer oldRowCoordinate = this.actualTile.getRowCoordinate();
+        Integer newRowCoordinate = newTile.getRowCoordinate();
+        if (oldRowCoordinate.equals(newRowCoordinate)) {
             return true;
         }
         return false;
     }
 
-    private boolean checkIfInTheSameRow(Tile newTile) {
-        Integer oldRowCoordinate = this.actualTile.getColumnCoordinate();
-        Integer newRowCoordinate = newTile.getColumnCoordinate();
-        if (oldRowCoordinate.equals(newRowCoordinate)) {
+    private boolean checkIfInTheSameColumn(Tile newTile) {
+        Integer oldColumnCoordinate = this.actualTile.getColumnCoordinate();
+        Integer newColumnCoordinate = newTile.getColumnCoordinate();
+        if (oldColumnCoordinate.equals(newColumnCoordinate)) {
             return true;
         }
         return false;
@@ -90,7 +104,7 @@ public class Rock implements Piece{
             higherYValue = newTile.getRowCoordinate();
         }
         for (int i = actualLowerYValue; i < higherYValue; i++) {
-            if (board.tileIsEmpty(this.actualTile.getRowCoordinate(), actualLowerYValue)) {
+            if(this.board.tileIsEmpty(this.actualTile.getRowCoordinate(), actualLowerYValue)) {
                 continue;
             }
             else return false;
