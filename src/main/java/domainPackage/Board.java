@@ -1,9 +1,6 @@
-package adaptersPackage.gui;
+package domainPackage;
 
-import javax.swing.*;
-import java.awt.*;
-
-public class Board extends JFrame {
+public class Board{
 
     private Tile[][] tiles = new Tile[8][8];
 
@@ -28,29 +25,18 @@ public class Board extends JFrame {
      **/
 
     public Board() {
-        init();
-    }
-
-    private void init() {
-        this.setLayout(new GridLayout(8, 8));
-
         fillBoardInitially();
-
-        this.setSize(new Dimension(500, 500));
-        this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     private void fillBoardInitially() {
         // fill the white pieces initially:
         fillAllPiecesInitially("WHITE");
         // fill the empty spaces:
-        for (int rowCounter = 2; rowCounter < 6; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-                tiles[rowCounter][columnCounter] =
-                        new Tile((rowCounter + columnCounter) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), null, null, this, rowCounter, columnCounter);
-                this.add(tiles[rowCounter][columnCounter]);
-            }
+        for (int i = 16; i < 48; i++) {
+            int rowCounter = i / 8;
+            int columnCounter = i % 8;
+            tiles[rowCounter][columnCounter] =
+                    new Tile((rowCounter + columnCounter) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), null, null, this, rowCounter, columnCounter);
         }
         // fill the black pieces initially
         fillAllPiecesInitially("BLACK");
@@ -68,28 +54,22 @@ public class Board extends JFrame {
     }
 
     private void fillLineWithPawnsInitially(String pieceColor) {
-        int rowNumber;
+        int rowNumber = 6;
         if (pieceColor == "WHITE") {
             rowNumber = 1;
-        } else {
-            rowNumber = 6;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
             tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), "Pawn", pieceColor, Board.this, rowNumber, columnCounter);
-            this.add(tiles[rowNumber][columnCounter]);
         }
     }
 
     private void fillLineWithTilesExceptPawnsInitially(String pieceColor) {
-        int rowNumber;
+        int rowNumber = 7;
         if (pieceColor == "WHITE") {
             rowNumber = 0;
-        } else {
-            rowNumber = 7;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
             tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), pieceOrder[columnCounter], pieceColor, Board.this, rowNumber, columnCounter);
-            this.add(tiles[rowNumber][columnCounter]);
         }
     }
 

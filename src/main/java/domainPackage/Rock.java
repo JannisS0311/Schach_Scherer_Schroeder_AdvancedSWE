@@ -1,8 +1,5 @@
 package domainPackage;
 
-import adaptersPackage.gui.Board;
-import adaptersPackage.gui.Tile;
-
 import javax.swing.*;
 import java.awt.*;
 

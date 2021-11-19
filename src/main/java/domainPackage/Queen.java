@@ -1,8 +1,5 @@
 package domainPackage;
 
-import adaptersPackage.gui.Board;
-import adaptersPackage.gui.Tile;
-
 import java.awt.*;
 
 public class Queen implements Piece{

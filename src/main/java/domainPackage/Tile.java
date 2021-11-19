@@ -1,6 +1,4 @@
-package adaptersPackage.gui;
-
-import domainPackage.*;
+package domainPackage;
 
 import javax.swing.*;
 import java.awt.*;
