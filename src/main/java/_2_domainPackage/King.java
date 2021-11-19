@@ -1,14 +1,14 @@
-package domainPackage;
+package _2_domainPackage;
 
 import java.awt.*;
 
-public class Queen implements Piece{
+public class King implements Piece{
 
     Tile actualTile;
     Board board;
     Color pieceColor;
 
-    public Queen(Tile actualTile, Board board, Color pieceColor) {
+    public King(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;

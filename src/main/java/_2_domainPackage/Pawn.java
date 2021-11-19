@@ -1,4 +1,4 @@
-package domainPackage;
+package _2_domainPackage;
 
 import javax.swing.*;
 import java.awt.*;

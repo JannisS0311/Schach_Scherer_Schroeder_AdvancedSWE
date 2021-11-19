@@ -1,7 +1,7 @@
-package mainPackage;
+package _0_mainPackage;
 
-import domainPackage.Board;
-import adaptersPackage.gui.GameFrame;
+import _2_domainPackage.Board;
+import _1_adaptersPackage.GameFrame;
 
 public class Main {
 

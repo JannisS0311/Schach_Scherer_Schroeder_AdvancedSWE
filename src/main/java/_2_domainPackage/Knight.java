@@ -1,14 +1,14 @@
-package domainPackage;
+package _2_domainPackage;
 
 import java.awt.*;
 
-public class Bishop implements Piece{
+public class Knight implements Piece{
 
     Tile actualTile;
     Board board;
     Color pieceColor;
 
-    public Bishop(Tile actualTile, Board board, Color pieceColor) {
+    public Knight(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;

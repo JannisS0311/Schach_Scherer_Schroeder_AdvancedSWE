@@ -1,4 +1,4 @@
-package domainPackage;
+package _2_domainPackage;
 
 public class Board{
 
@@ -36,7 +36,7 @@ public class Board{
             int rowCounter = i / 8;
             int columnCounter = i % 8;
             tiles[rowCounter][columnCounter] =
-                    new Tile((rowCounter + columnCounter) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), null, null, this, rowCounter, columnCounter);
+                    new Tile(Tile.getColor((rowCounter + columnCounter) % 2), null, null, this, rowCounter, columnCounter);
         }
         // fill the black pieces initially
         fillAllPiecesInitially("BLACK");
@@ -59,7 +59,7 @@ public class Board{
             rowNumber = 1;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), "Pawn", pieceColor, Board.this, rowNumber, columnCounter);
+            tiles[rowNumber][columnCounter] = new Tile(Tile.getColor((rowNumber + columnCounter) % 2), "Pawn", pieceColor, Board.this, rowNumber, columnCounter);
         }
     }
 
@@ -69,7 +69,7 @@ public class Board{
             rowNumber = 0;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile((columnCounter + rowNumber) % 2 == 1 ? Tile.getColor1() : Tile.getTileColor2(), pieceOrder[columnCounter], pieceColor, Board.this, rowNumber, columnCounter);
+            tiles[rowNumber][columnCounter] = new Tile(Tile.getColor((rowNumber + columnCounter) % 2), pieceOrder[columnCounter], pieceColor, Board.this, rowNumber, columnCounter);
         }
     }
 

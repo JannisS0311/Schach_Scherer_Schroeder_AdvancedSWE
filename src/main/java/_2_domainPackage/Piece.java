@@ -1,4 +1,4 @@
-package domainPackage;
+package _2_domainPackage;
 
 public interface Piece {
     

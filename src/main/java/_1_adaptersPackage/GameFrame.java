@@ -1,6 +1,6 @@
-package adaptersPackage.gui;
+package _1_adaptersPackage;
 
-import domainPackage.Board;
+import _2_domainPackage.Board;
 
 import javax.swing.*;
 import java.awt.*;
