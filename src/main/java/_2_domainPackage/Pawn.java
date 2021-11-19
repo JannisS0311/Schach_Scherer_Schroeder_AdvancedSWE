@@ -29,12 +29,20 @@ public class Pawn implements Piece{
     }
 
     public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        if (checkIfInTheSameColumn(oldLocation, newLocation) && checkIfMoveIsForwards(oldLocation, newLocation)) {
+        if (( checkIfInTheSameColumn(oldLocation, newLocation) || checkIfMoveIsDiagonal(oldLocation, newLocation) ) && checkIfMoveIsForwards(oldLocation, newLocation)) {
             return checkIfStepNumberIsAllowed(oldLocation, newLocation);
         }
         // TODO beat your enemies piece
         else if(true){
             return false;
+        }
+        return false;
+    }
+
+    private boolean checkIfMoveIsDiagonal(Location oldLocation, Location newLocation){
+        if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() + 1 ||
+                oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() - 1){
+            return true;
         }
         return false;
     }

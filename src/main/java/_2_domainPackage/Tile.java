@@ -9,18 +9,16 @@ public class Tile extends JLabel {
     private Location location = new Location();
 
     private Piece piece;
+    private Color pieceColor;
 
     private Board board;
 
     public Tile(Color tileColor, String pieceType, String pieceColor, Board board, int rowCoordinate, int columnCoordinate) {
         this.setBackground(tileColor);
-
+        this.pieceColor = setColorFromString(pieceColor);
         setIcon(pieceColor, pieceType);
-
         this.piece = generatePiece(this.board, this, pieceType, pieceColor);
-
         this.board = board;
-
         this.location.setLocation(rowCoordinate, columnCoordinate);
 
         this.setMinimumSize(new Dimension(20, 20));
@@ -78,14 +76,6 @@ public class Tile extends JLabel {
         return null;
     }
 
-    public int getRowCoordinate() {
-        return this.location.getRowCoordinate();
-    }
-
-    public int getColumnCoordinate() {
-        return this.location.getColumnCoordinate();
-    }
-
     public Piece getPiece() {
         return piece;
     }
@@ -103,5 +93,9 @@ public class Tile extends JLabel {
             return true;
         }
         return false;
+    }
+
+    public Color getPieceColor() {
+        return pieceColor;
     }
 }

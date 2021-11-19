@@ -1,5 +1,6 @@
 package _2_domainPackage;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Board {
@@ -86,8 +87,10 @@ public class Board {
 
         ArrayList<Location> tilesInBetween = chosenPiece.getTilesInBetween(oldLocation, newLocation);
 
-        if (validNewLocation(newLocation) && newTileIsEmpty(newLocation)
-                && tilesBetweenAreEmpty(tilesInBetween) && chosenPiece.isMoveOkay(oldLocation, newLocation)) {
+        if (validNewLocation(newLocation)
+                && tilesBetweenAreEmpty(tilesInBetween)
+                && chosenPiece.isMoveOkay(oldLocation, newLocation)
+                && (newTileIsEmpty(newLocation) || newTileHasEnemiesPiece(oldLocation, newLocation))) {
             changeBoard(oldLocation, newLocation);
         }
     }
@@ -95,6 +98,16 @@ public class Board {
     private boolean newTileIsEmpty(Location newLocation){
         boolean newTileIsEmpty = (tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPiece() == null);
         return newTileIsEmpty;
+    }
+
+    private boolean newTileHasEnemiesPiece(Location oldLocation, Location newLocation){
+        Color attackingPieceColor = tiles[oldLocation.getRowCoordinate()][oldLocation.getColumnCoordinate()].getPieceColor();
+        Color beatenPieceColor = tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPieceColor();
+        System.out.println(attackingPieceColor + ", " + beatenPieceColor);
+        if(attackingPieceColor != beatenPieceColor){
+            return true;
+        }
+        return false;
     }
 
     private boolean tilesBetweenAreEmpty(ArrayList<Location> tilesBetween){
