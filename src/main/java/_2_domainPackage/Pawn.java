@@ -1,7 +1,7 @@
 package _2_domainPackage;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Pawn implements Piece{
 
@@ -9,99 +9,83 @@ public class Pawn implements Piece{
     Board board;
     Color pieceColor;
 
-    private String imagePath = "src/main/resources/chesspieces/";
-
     public Pawn(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
     }
 
-    @Override
-    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate, Board board) {
-        Tile newTile = board.getTile(newRowCoordinate, newColumnCoordinate);
-        String color = (this.pieceColor.toString().equals("java.awt.Color[r=255,g=255,b=255]") ? "WHITE" : "BLACK");
-        if (checkIfMoveIsAllowed(newTile)) {
-            board.getTile(newRowCoordinate, newColumnCoordinate).setIcon(loadIcon(color + "Pawn"));
-            board.getTile(newRowCoordinate, newColumnCoordinate).setPiece(this.actualTile.getPiece());
-            this.actualTile.removeIcon();
-            this.actualTile.removePiece();
-            this.actualTile.setLocation(newRowCoordinate, newColumnCoordinate);
-            return true;
+    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        if(checkIfOneStep(oldLocation, newLocation)){
+            return tilesInBetween;
         }
-        return false;
+        if(oldLocation.getRowCoordinate() == 1){
+            tilesInBetween.add(new Location(2, oldLocation.getColumnCoordinate()));
+            return tilesInBetween;
+        }
+        tilesInBetween.add(new Location(5, oldLocation.getColumnCoordinate()));
+        return tilesInBetween;
     }
 
-    private ImageIcon loadIcon(String fileName) {
-        ImageIcon icon = new ImageIcon(imagePath + fileName + ".png");
-        return icon;
-    }
-
-    public boolean checkIfMoveIsAllowed(Tile newTile) {
-        // normal move, don't beat your enemies piece
-        if (checkIfInTheSameColumn(newTile) && checkIfMoveIsForwards(newTile) && checkIfStepNumberIsAllowed(newTile)) {
-            return checkIfNewTileIsEmpty(newTile);
+    public boolean isMoveOkay(Location oldLocation, Location newLocation){
+        if (checkIfInTheSameColumn(oldLocation, newLocation) && checkIfMoveIsForwards(oldLocation, newLocation)) {
+            return checkIfStepNumberIsAllowed(oldLocation, newLocation);
         }
-        // beat your enemies piece TODO
+        // TODO beat your enemies piece
         else if(true){
             return false;
         }
         return false;
     }
 
-    private boolean checkIfMoveIsForwards(Tile newTile){
-        if(pieceColor == Color.BLACK && (actualTile.getRowCoordinate() > newTile.getRowCoordinate())){
+    private boolean checkIfMoveIsForwards(Location oldLocation, Location newLocation){
+        if(pieceColor == Color.BLACK && (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate())){
             return true;
         }
-        else if(pieceColor == Color.WHITE && (actualTile.getRowCoordinate() < newTile.getRowCoordinate())){
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfStepNumberIsAllowed(Tile newTile){
-        if(checkIfInitiallyTwoSteps(newTile)){
-            return true;
-        }
-        else if(checkIfOneStep(newTile)){
+        else if(pieceColor == Color.WHITE && (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate())){
             return true;
         }
         return false;
     }
 
-    private boolean checkIfInitiallyTwoSteps(Tile newTile){
-        if(actualTile.getRowCoordinate() == 1 && newTile.getRowCoordinate() == 3){
+    private boolean checkIfStepNumberIsAllowed(Location oldLocation, Location newLocation){
+        if(checkIfInitiallyTwoSteps(oldLocation, newLocation)){
             return true;
         }
-        else if(actualTile.getRowCoordinate() == 6 && newTile.getRowCoordinate() == 4){
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfOneStep(Tile newTile){
-        if(actualTile.getRowCoordinate() == newTile.getRowCoordinate() + 1){
-            return true;
-        }
-        else if(actualTile.getRowCoordinate() == newTile.getRowCoordinate() - 1){
+        else if(checkIfOneStep(oldLocation, newLocation)){
             return true;
         }
         return false;
     }
 
-    private boolean checkIfInTheSameColumn(Tile newTile) {
-        Integer oldColumnNumber = this.actualTile.getColumnCoordinate();
-        Integer newColumnNumber = newTile.getColumnCoordinate();
+    private boolean checkIfInitiallyTwoSteps(Location oldLocation, Location newLocation){
+        if(oldLocation.getRowCoordinate() == 1 && newLocation.getRowCoordinate() == 3){
+            return true;
+        }
+        else if(oldLocation.getRowCoordinate() == 6 && newLocation.getRowCoordinate() == 4){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfOneStep(Location oldLocation, Location newLocation){
+        if(oldLocation.getRowCoordinate() == newLocation.getRowCoordinate() + 1){
+            return true;
+        }
+        else if(oldLocation.getRowCoordinate() == newLocation.getRowCoordinate() - 1){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
+        Integer oldColumnNumber = oldLocation.getColumnCoordinate();
+        Integer newColumnNumber = newLocation.getColumnCoordinate();
         if (oldColumnNumber.equals(newColumnNumber)) {
             return true;
         }
         return false;
     }
 
-    public boolean checkIfNewTileIsEmpty(Tile newTile) {
-        if (newTile.getPiece() == null) {
-            return true;
-        }
-        return false;
-    }
 }

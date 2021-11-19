@@ -2,6 +2,7 @@ package _2_domainPackage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Rock implements Piece{
 
@@ -9,104 +10,50 @@ public class Rock implements Piece{
     Board board;
     Color pieceColor;
 
-    private String imagePath = "src/main/resources/chesspieces/";
-
     public Rock(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
     }
 
+    public boolean isMoveOkay(Location oldLocation, Location newLocation){
+        if (checkIfInTheSameRow(oldLocation, newLocation) || checkIfInTheSameColumn(oldLocation, newLocation)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfInTheSameRow(Location oldLocation, Location newLocation) {
+        if (oldLocation.getRowCoordinate() == newLocation.getRowCoordinate()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
+        if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public boolean setLocation(int newRowCoordinate, int newColumnCoordinate, Board board) {
-        Tile newTile = board.getTile(newRowCoordinate, newColumnCoordinate);
-        String color = (this.pieceColor.toString().equals("java.awt.Color[r=255,g=255,b=255]") ? "WHITE" : "BLACK");
-        if (checkIfMoveIsAllowed(newTile)) {
-            board.getTile(newRowCoordinate, newColumnCoordinate).setIcon(loadIcon(color + "Rock"));
-            board.getTile(newRowCoordinate, newColumnCoordinate).setPiece(this.actualTile.getPiece());
-            this.actualTile.removeIcon();
-            this.actualTile.removePiece();
-            this.actualTile.setLocation(newRowCoordinate, newColumnCoordinate);
-            return true;
-        }
-        return false;
-    }
-
-    private ImageIcon loadIcon(String fileName) {
-        ImageIcon icon = new ImageIcon(imagePath + fileName + ".png");
-        return icon;
-    }
-
-    public boolean checkIfMoveIsAllowed(Tile newTile) {
-        if (checkIfInTheSameRow(newTile) && checkIfNewTileIsEmpty(newTile)) {
-            return checkIfTheTilesBetweenAreEmptyRowDirection(newTile);
-        } else if (checkIfInTheSameColumn(newTile) && checkIfNewTileIsEmpty(newTile)) {
-            return checkIfTheTilesBetweenAreEmptyColumnDirection(newTile);
-        }
-        return false;
-    }
-
-    private boolean checkIfInTheSameRow(Tile newTile) {
-        Integer oldRowCoordinate = this.actualTile.getRowCoordinate();
-        Integer newRowCoordinate = newTile.getRowCoordinate();
-        if (oldRowCoordinate.equals(newRowCoordinate)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfInTheSameColumn(Tile newTile) {
-        Integer oldColumnCoordinate = this.actualTile.getColumnCoordinate();
-        Integer newColumnCoordinate = newTile.getColumnCoordinate();
-        if (oldColumnCoordinate.equals(newColumnCoordinate)) {
-            return true;
-        }
-        return false;
-    }
-
-    // ToDo: don't just check on image but also on figure of the tile!
-    public boolean checkIfNewTileIsEmpty(Tile newTile) {
-        if (newTile.getPiece() == null) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfTheTilesBetweenAreEmptyRowDirection(Tile newTile) {
-        int actualLowerRowValue, higherXValue;
-        if (this.actualTile.getColumnCoordinate() > newTile.getColumnCoordinate()) {
-            actualLowerRowValue = newTile.getColumnCoordinate();
-            higherXValue = this.actualTile.getColumnCoordinate();
-        } else {
-            actualLowerRowValue = this.actualTile.getColumnCoordinate();
-            higherXValue = newTile.getColumnCoordinate();
-        }
-        for (int i = actualLowerRowValue; i < higherXValue; i++) {
-            if (board.tileIsEmpty(actualLowerRowValue, this.actualTile.getRowCoordinate())) {
-                continue;
+    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+        ArrayList<Location> location = new ArrayList<>();
+        if(checkIfInTheSameColumn(oldLocation, newLocation)){
+            int lowerRowValue = Math.min(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
+            int higherRowValue = Math.max(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
+            for (int i = lowerRowValue + 1; i < higherRowValue; i++) {
+                location.add(new Location(i, oldLocation.getColumnCoordinate()));
             }
-            else return false;
+            return location;
         }
-        return true;
+        int lowerColumnValue = Math.min(oldLocation.getColumnCoordinate(), newLocation.getColumnCoordinate());
+        int higherColumnValue = Math.max(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
+        for (int i = lowerColumnValue + 1; i < higherColumnValue; i++) {
+            location.add(new Location(oldLocation.getRowCoordinate(), i));
+        }
+        return location;
+
     }
-
-
-    private boolean checkIfTheTilesBetweenAreEmptyColumnDirection(Tile newTile){
-        int actualLowerYValue, higherYValue;
-        if (this.actualTile.getRowCoordinate() > newTile.getRowCoordinate()) {
-            actualLowerYValue = newTile.getRowCoordinate();
-            higherYValue = this.actualTile.getRowCoordinate();
-        } else {
-            actualLowerYValue = this.actualTile.getRowCoordinate();
-            higherYValue = newTile.getRowCoordinate();
-        }
-        for (int i = actualLowerYValue; i < higherYValue; i++) {
-            if(this.board.tileIsEmpty(this.actualTile.getRowCoordinate(), actualLowerYValue)) {
-                continue;
-            }
-            else return false;
-        }
-        return true;
-    }
-
 }

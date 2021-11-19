@@ -1,6 +1,8 @@
 package _2_domainPackage;
 
-public class Board{
+import java.util.ArrayList;
+
+public class Board {
 
     private Tile[][] tiles = new Tile[8][8];
 
@@ -17,9 +19,9 @@ public class Board{
      * 3	. . . . . . . .
      * 2	P P P P P P P P
      * 1    R N B Q K B N R
-     *
-     *      a b c d e f g h
-     *
+     * <p>
+     * a b c d e f g h
+     * <p>
      * P=pawn, K=king, Q=queen, R=rook, N=knight, B=Bishop
      * Uppercase is white
      **/
@@ -73,27 +75,59 @@ public class Board{
         }
     }
 
-    /*public void removePiece(int xCoordinate, int yCoordinate) {
-        this.tiles[xCoordinate][yCoordinate].removeIcon();
-        this.tiles[xCoordinate][yCoordinate].removePiece();
-        this.repaint();
-    } */
-
-    /*public void setPiece(String pieceColor, String piece, int xCoordinate, int yCoordinate) {
-        this.tiles[xCoordinate][yCoordinate].setIcon(loadIcon(pieceColor + piece));
-        this.tiles[xCoordinate][yCoordinate].setPiece(piece, pieceColor );
-        this.repaint();
-    } */
-
-    public boolean tileIsEmpty(int xCoordinate, int yCoordinate) {
-        if (this.tiles[xCoordinate][yCoordinate].getIcon() == null){
-            return true;
-        }
-        return false;
-    }
-
     public Tile getTile(int rowCoordinate, int columnCoordinate) {
         return tiles[rowCoordinate][columnCoordinate];
+    }
+
+    ///////////////////////////////////////////////
+
+    public void movePiece(Location oldLocation, Location newLocation) {
+        Piece chosenPiece = this.getTile(oldLocation.getRowCoordinate(), oldLocation.getColumnCoordinate()).getPiece();
+
+        ArrayList<Location> tilesInBetween = chosenPiece.getTilesInBetween(oldLocation, newLocation);
+
+        if (validNewLocation(newLocation) && newTileIsEmpty(newLocation)
+                && tilesBetweenAreEmpty(tilesInBetween) && chosenPiece.isMoveOkay(oldLocation, newLocation)) {
+            changeBoard(oldLocation, newLocation);
+        }
+    }
+
+    private boolean newTileIsEmpty(Location newLocation){
+        boolean newTileIsEmpty = (tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPiece() == null);
+        return newTileIsEmpty;
+    }
+
+    private boolean tilesBetweenAreEmpty(ArrayList<Location> tilesBetween){
+        while(tilesBetween.size() != 0){
+            if(tiles[tilesBetween.get(0).getRowCoordinate()][tilesBetween.get(0).getColumnCoordinate()].tileIsEmpty()){
+                tilesBetween.remove(0);
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void changeBoard(Location oldLocation, Location newLocation) {
+        int oldRow = oldLocation.getRowCoordinate();
+        int oldCol = oldLocation.getColumnCoordinate();
+        int newRow = newLocation.getRowCoordinate();
+        int newCol = newLocation.getColumnCoordinate();
+
+        Tile oldTile = this.getTile(oldRow, oldLocation.getColumnCoordinate());
+        this.tiles[newRow][newCol].setIcon(oldTile.getIcon());
+        this.tiles[newRow][newCol].setPiece(oldTile.getPiece());
+        this.tiles[oldRow][oldCol].removeIcon();
+        this.tiles[oldRow][oldCol].removePiece();
+    }
+
+    private boolean validNewLocation(Location newLocation){
+        int row = newLocation.getRowCoordinate();
+        int col = newLocation.getColumnCoordinate();
+        if(row < 0 || row > 7 || col < 0 || col > 7){
+            return false;
+        }
+        return true;
     }
 
 }

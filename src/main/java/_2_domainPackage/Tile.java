@@ -15,7 +15,7 @@ public class Tile extends JLabel {
     public Tile(Color tileColor, String pieceType, String pieceColor, Board board, int rowCoordinate, int columnCoordinate) {
         this.setBackground(tileColor);
 
-        this.setIcon(new PieceIcon().loadIcon(pieceColor, pieceType));
+        setIcon(pieceColor, pieceType);
 
         this.piece = generatePiece(this.board, this, pieceType, pieceColor);
 
@@ -67,6 +67,10 @@ public class Tile extends JLabel {
         return color;
     }
 
+    public void setIcon(String pieceColor, String pieceType) {
+        this.setIcon(new PieceIcon().loadIcon(pieceColor, pieceType));
+    }
+
     public static Color getColor(int colorNumber) {
         if(colorNumber == 0 || colorNumber == 1) {
             return TileColor.values()[colorNumber].awtColor;
@@ -82,13 +86,6 @@ public class Tile extends JLabel {
         return this.location.getColumnCoordinate();
     }
 
-    public boolean isOccupied() {
-        if (this.getPiece() == null) {
-            return false;
-        }
-        return true;
-    }
-
     public Piece getPiece() {
         return piece;
     }
@@ -99,5 +96,12 @@ public class Tile extends JLabel {
 
     public void removeIcon() {
         this.setIcon(null);
+    }
+
+    public boolean tileIsEmpty(){
+        if(this.piece == null){
+            return true;
+        }
+        return false;
     }
 }
