@@ -101,10 +101,10 @@ public class Board {
     }
 
     private boolean newTileHasEnemiesPiece(Location oldLocation, Location newLocation){
-        Color attackingPieceColor = tiles[oldLocation.getRowCoordinate()][oldLocation.getColumnCoordinate()].getPieceColor();
-        Color beatenPieceColor = tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPieceColor();
+        String attackingPieceColor = tiles[oldLocation.getRowCoordinate()][oldLocation.getColumnCoordinate()].getPieceColorAsString();
+        String beatenPieceColor = tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPieceColorAsString();
         System.out.println(attackingPieceColor + ", " + beatenPieceColor);
-        if(attackingPieceColor != beatenPieceColor){
+        if(!attackingPieceColor.equals(beatenPieceColor)){
             return true;
         }
         return false;
@@ -128,10 +128,12 @@ public class Board {
         int newCol = newLocation.getColumnCoordinate();
 
         Tile oldTile = this.getTile(oldRow, oldLocation.getColumnCoordinate());
-        this.tiles[newRow][newCol].setIcon(oldTile.getIcon());
         this.tiles[newRow][newCol].setPiece(oldTile.getPiece());
-        this.tiles[oldRow][oldCol].removeIcon();
+        this.tiles[newRow][newCol].setIcon(oldTile.getIcon());
+        this.tiles[newRow][newCol].setPieceColorString(oldTile.getPieceColorAsString());
+        this.tiles[oldRow][oldCol].setIcon(null);
         this.tiles[oldRow][oldCol].removePiece();
+        this.tiles[oldRow][oldCol].setPieceColor(null);
     }
 
     private boolean validNewLocation(Location newLocation){
