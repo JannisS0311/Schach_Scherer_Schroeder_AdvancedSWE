@@ -21,6 +21,7 @@ public class Queen implements Piece{
 
     @Override
     public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
-        return null;
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        return tilesInBetween;
     }
 }

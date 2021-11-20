@@ -95,24 +95,23 @@ public class Board {
         }
     }
 
-    private boolean newTileIsEmpty(Location newLocation){
+    private boolean newTileIsEmpty(Location newLocation) {
         boolean newTileIsEmpty = (tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPiece() == null);
         return newTileIsEmpty;
     }
 
-    private boolean newTileHasEnemiesPiece(Location oldLocation, Location newLocation){
+    private boolean newTileHasEnemiesPiece(Location oldLocation, Location newLocation) {
         String attackingPieceColor = tiles[oldLocation.getRowCoordinate()][oldLocation.getColumnCoordinate()].getPieceColorAsString();
         String beatenPieceColor = tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPieceColorAsString();
-        System.out.println(attackingPieceColor + ", " + beatenPieceColor);
-        if(!attackingPieceColor.equals(beatenPieceColor)){
+        if (!attackingPieceColor.equals(beatenPieceColor)) {
             return true;
         }
         return false;
     }
 
-    private boolean tilesBetweenAreEmpty(ArrayList<Location> tilesBetween){
-        while(tilesBetween.size() != 0){
-            if(tiles[tilesBetween.get(0).getRowCoordinate()][tilesBetween.get(0).getColumnCoordinate()].tileIsEmpty()){
+    private boolean tilesBetweenAreEmpty(ArrayList<Location> tilesBetween) {
+        while (tilesBetween.size() != 0) {
+            if (tiles[tilesBetween.get(0).getRowCoordinate()][tilesBetween.get(0).getColumnCoordinate()].tileIsEmpty()) {
                 tilesBetween.remove(0);
                 continue;
             }
@@ -136,10 +135,10 @@ public class Board {
         this.tiles[oldRow][oldCol].setPieceColor(null);
     }
 
-    private boolean validNewLocation(Location newLocation){
+    private boolean validNewLocation(Location newLocation) {
         int row = newLocation.getRowCoordinate();
         int col = newLocation.getColumnCoordinate();
-        if(row < 0 || row > 7 || col < 0 || col > 7){
+        if (row < 0 || row > 7 || col < 0 || col > 7) {
             return false;
         }
         return true;
