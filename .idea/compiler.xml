@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Schach_Scherer_Schroeder_AdwancedSWE" />
+        <module name="Schach_Scherer_Schroeder_AdvancedSWE" />
       </profile>
     </annotationProcessing>
   </component>

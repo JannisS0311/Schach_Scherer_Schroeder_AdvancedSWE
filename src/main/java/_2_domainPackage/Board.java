@@ -58,7 +58,7 @@ public class Board {
 
     private void fillLineWithPawnsInitially(String pieceColor) {
         int rowNumber = 6;
-        if (pieceColor == "WHITE") {
+        if (pieceColor == "BLACK") {
             rowNumber = 1;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
@@ -68,7 +68,7 @@ public class Board {
 
     private void fillLineWithTilesExceptPawnsInitially(String pieceColor) {
         int rowNumber = 7;
-        if (pieceColor == "WHITE") {
+        if (pieceColor == "BLACK") {
             rowNumber = 0;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
