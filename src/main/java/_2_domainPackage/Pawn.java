@@ -48,10 +48,10 @@ public class Pawn implements Piece{
     }
 
     private boolean checkIfMoveIsForwards(Location oldLocation, Location newLocation){
-        if(pieceColor == Color.BLACK && (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate())){
+        if(pieceColor == Color.WHITE && (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate())){
             return true;
         }
-        else if(pieceColor == Color.WHITE && (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate())){
+        else if(pieceColor == Color.BLACK && (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate())){
             return true;
         }
         return false;

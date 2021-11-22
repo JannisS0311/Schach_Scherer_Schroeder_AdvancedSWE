@@ -9,7 +9,7 @@ public class Main {
         Board board = new Board();
         //board.movePiece(new Location(6, 1), new Location(5, 1));
         board.movePiece(new Location(6, 0), new Location(5, 0));
-        //board.movePiece(new Location(3, 0), new Location(2, 0));
+        board.movePiece(new Location(1, 0), new Location(2, 0));
         //board.movePiece(new Location(2, 0), new Location(1, 1));
         GameFrame gameFrame = new GameFrame(board);
     }

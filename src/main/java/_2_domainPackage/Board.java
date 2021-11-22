@@ -33,7 +33,7 @@ public class Board {
 
     private void fillBoardInitially() {
         // fill the white pieces initially:
-        fillAllPiecesInitially("WHITE");
+        fillAllPiecesInitially("BLACK");
         // fill the empty spaces:
         for (int i = 16; i < 48; i++) {
             int rowCounter = i / 8;
@@ -42,7 +42,7 @@ public class Board {
                     new Tile(Tile.getColor((rowCounter + columnCounter) % 2), null, null, this, rowCounter, columnCounter);
         }
         // fill the black pieces initially
-        fillAllPiecesInitially("BLACK");
+        fillAllPiecesInitially("WHITE");
     }
 
     private void fillAllPiecesInitially(String pieceColor) {
