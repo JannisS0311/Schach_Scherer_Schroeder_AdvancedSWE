@@ -17,21 +17,10 @@ public class Rock implements Piece{
     }
 
     public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        if (checkIfInTheSameRow(oldLocation, newLocation) || checkIfInTheSameColumn(oldLocation, newLocation)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfInTheSameRow(Location oldLocation, Location newLocation) {
         if (oldLocation.getRowCoordinate() == newLocation.getRowCoordinate()) {
             return true;
         }
-        return false;
-    }
-
-    private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
-        if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {
+        else if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()){
             return true;
         }
         return false;
@@ -40,7 +29,7 @@ public class Rock implements Piece{
     @Override
     public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
         ArrayList<Location> location = new ArrayList<>();
-        if(checkIfInTheSameColumn(oldLocation, newLocation)){
+        if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()){
             int lowerRowValue = Math.min(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
             int higherRowValue = Math.max(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
             for (int i = lowerRowValue + 1; i < higherRowValue; i++) {
@@ -48,12 +37,12 @@ public class Rock implements Piece{
             }
             return location;
         }
+        // if oldLocation.getRowCoordinate() == newLocation.getRowCoordinate():
         int lowerColumnValue = Math.min(oldLocation.getColumnCoordinate(), newLocation.getColumnCoordinate());
         int higherColumnValue = Math.max(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
         for (int i = lowerColumnValue + 1; i < higherColumnValue; i++) {
             location.add(new Location(oldLocation.getRowCoordinate(), i));
         }
         return location;
-
     }
 }

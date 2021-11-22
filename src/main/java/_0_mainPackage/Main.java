@@ -7,12 +7,15 @@ public class Main {
 
     public static void main(String[] args) {
         Board board = new Board();
-        //board.movePiece(new Location(6, 1), new Location(5, 1));
-        board.movePiece(new Location(6, 0), new Location(4, 0));
-        board.movePiece(new Location(7, 0), new Location(5, 0));
-        board.movePiece(new Location(5, 0), new Location(5, 1));
-        board.movePiece(new Location(5, 1), new Location(3, 1));
-        board.movePiece(new Location(4, 0), new Location(3, 1));
+        board.movePiece(new Location(6, 3), new Location(5, 3));
+        board.movePiece(new Location(7, 3), new Location(6, 3));
+        board.movePiece(new Location(6, 3), new Location(2, 7));
+        board.movePiece(new Location(2, 7), new Location(1, 6));
+        board.movePiece(new Location(1, 6), new Location(0, 6));
+        board.movePiece(new Location(0, 6), new Location(1, 7));
+        board.movePiece(new Location(7, 2), new Location(5, 4));
+        board.movePiece(new Location(5, 4), new Location(3, 2));
+        board.movePiece(new Location(3, 2), new Location(5, 4));
         GameFrame gameFrame = new GameFrame(board);
     }
 }

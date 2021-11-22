@@ -16,8 +16,8 @@ public class Bishop implements Piece{
     }
 
     public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        int numberOfSteps = getNumberOfSteps(oldLocation, newLocation);
-        if(numberOfSteps != 0){
+        if (Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()))
+                == Math.abs((oldLocation.getColumnCoordinate() - newLocation.getColumnCoordinate()))) {
             return true;
         }
         return false;
@@ -25,30 +25,56 @@ public class Bishop implements Piece{
 
     @Override
     public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
-        ArrayList<Location> tilesInBetween = new ArrayList<>();
-        int numberOfSteps = getNumberOfSteps(oldLocation, newLocation);
-        Location locWithLowerRowCoordinate = newLocation;
-        if(oldLocation.getRowCoordinate() < newLocation.getRowCoordinate()){
-            locWithLowerRowCoordinate = oldLocation;
+        int numberOfSteps = getNumberOfDiagonalSteps(oldLocation, newLocation);
+        if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()){
+            return leftUpperDirection(oldLocation, newLocation, numberOfSteps);
         }
-        for (int i = 0; i < numberOfSteps; i++) {
-            tilesInBetween.add(new Location(locWithLowerRowCoordinate.getRowCoordinate() + i,
-                    locWithLowerRowCoordinate.getColumnCoordinate() + i));
+        else if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() < newLocation.getColumnCoordinate()){
+            return rightUpperDirection(oldLocation, newLocation, numberOfSteps);
+        }
+        else if (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()){
+            return leftLowerDirection(oldLocation, newLocation, numberOfSteps);
+        }
+        return rightLowerDirection(oldLocation, newLocation, numberOfSteps);
+    }
+
+    private int getNumberOfDiagonalSteps(Location oldLocation, Location newLocation){
+        return Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()));
+    }
+
+    private ArrayList<Location> leftUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        for (int i = 1; i < numberOfSteps; i++) {
+            tilesInBetween.add(
+                    new Location(oldLocation.getRowCoordinate() - i, oldLocation.getColumnCoordinate() - i));
         }
         return tilesInBetween;
     }
 
-    private int getNumberOfSteps(Location oldLocation, Location newLocation){
-        int oldRow = oldLocation.getRowCoordinate();
-        int oldCol = oldLocation.getColumnCoordinate();
-        int newRow = newLocation.getRowCoordinate();
-        int newCol = newLocation.getColumnCoordinate();
-
-        for (int i = -8; i < 9; i++) {
-            if (oldRow == newRow + i && oldCol == newCol + i){
-                return i;
-            }
+    private ArrayList<Location> rightUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        for (int i = 1; i < numberOfSteps; i++) {
+            tilesInBetween.add(
+                    new Location(oldLocation.getRowCoordinate() - i, oldLocation.getColumnCoordinate() + i));
         }
-        return 0; // no fitting i found, move is not okay
+        return tilesInBetween;
+    }
+
+    private ArrayList<Location> leftLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        for (int i = 1; i < numberOfSteps; i++) {
+            tilesInBetween.add(
+                    new Location(oldLocation.getRowCoordinate() + i, oldLocation.getColumnCoordinate() - i));
+        }
+        return tilesInBetween;
+    }
+
+    private ArrayList<Location> rightLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+        ArrayList<Location> tilesInBetween = new ArrayList<>();
+        for (int i = 1; i < numberOfSteps; i++) {
+            tilesInBetween.add(
+                    new Location(oldLocation.getRowCoordinate() + i, oldLocation.getColumnCoordinate() + i));
+        }
+        return tilesInBetween;
     }
 }
