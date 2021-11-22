@@ -19,8 +19,8 @@ public class Tile extends JLabel {
         this.pieceColor = setColorFromString(pieceColor);
         this.pieceType = pieceType;
         setIcon(pieceColor, pieceType);
-        this.piece = generatePiece(this.board, this, pieceType, pieceColor);
         this.board = board;
+        this.piece = generatePiece(this.board, this, pieceType, pieceColor);
         this.location.setLocation(rowCoordinate, columnCoordinate);
 
         this.setMinimumSize(new Dimension(20, 20));
@@ -116,5 +116,9 @@ public class Tile extends JLabel {
 
     public String getPieceType() {
         return pieceType;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

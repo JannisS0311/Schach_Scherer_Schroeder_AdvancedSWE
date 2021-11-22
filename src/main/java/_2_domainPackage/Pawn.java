@@ -29,19 +29,22 @@ public class Pawn implements Piece{
     }
 
     public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        if (( checkIfInTheSameColumn(oldLocation, newLocation) || checkIfMoveIsDiagonal(oldLocation, newLocation) ) && checkIfMoveIsForwards(oldLocation, newLocation)) {
-            return checkIfStepNumberIsAllowed(oldLocation, newLocation);
+        if (checkIfInTheSameColumn(oldLocation, newLocation)
+                && checkIfMoveIsForwards(oldLocation, newLocation)
+                && checkIfStepNumberIsAllowed(oldLocation, newLocation)) {
+            return true;
         }
-        // TODO beat your enemies piece
-        else if(true){
-            return false;
+        else if(checkIfMoveIsDiagonal(oldLocation, newLocation)
+                && checkIfNewTileIsOccupied(newLocation)){
+            return true;
         }
         return false;
     }
 
-    private boolean checkIfMoveIsDiagonal(Location oldLocation, Location newLocation){
-        if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() + 1 ||
-                oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() - 1){
+    private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
+        Integer oldColumnNumber = oldLocation.getColumnCoordinate();
+        Integer newColumnNumber = newLocation.getColumnCoordinate();
+        if (oldColumnNumber.equals(newColumnNumber)) {
             return true;
         }
         return false;
@@ -87,13 +90,16 @@ public class Pawn implements Piece{
         return false;
     }
 
-    private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
-        Integer oldColumnNumber = oldLocation.getColumnCoordinate();
-        Integer newColumnNumber = newLocation.getColumnCoordinate();
-        if (oldColumnNumber.equals(newColumnNumber)) {
+    private boolean checkIfMoveIsDiagonal(Location oldLocation, Location newLocation){
+        if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() + 1 ||
+                oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() - 1){
             return true;
         }
         return false;
     }
 
+    private boolean checkIfNewTileIsOccupied(Location newLocation){
+        boolean newTileIsOccupied = this.board.getTile(newLocation.getRowCoordinate(), newLocation.getColumnCoordinate()).tileIsEmpty();
+        return !newTileIsOccupied;
+    }
 }
