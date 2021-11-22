@@ -6,13 +6,13 @@ import java.lang.reflect.Field;
 
 public class Tile extends JLabel {
 
-    private Location location = new Location();
+    private Location location;
 
     private Piece piece;
-    private String pieceType;
+    private final String pieceType;
     private Color pieceColor;
 
-    private Board board;
+    private final Board board;
 
     public Tile(Color tileColor, String pieceType, String pieceColor, Board board, int rowCoordinate, int columnCoordinate) {
         this.setBackground(tileColor);
@@ -21,11 +21,18 @@ public class Tile extends JLabel {
         setIcon(pieceColor, pieceType);
         this.board = board;
         this.piece = generatePiece(this.board, this, pieceType, pieceColor);
-        this.location.setLocation(rowCoordinate, columnCoordinate);
+        this.location = new Location(rowCoordinate, columnCoordinate);
 
         this.setMinimumSize(new Dimension(20, 20));
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.setOpaque(true);
+    }
+
+    public static Color getColor(int colorNumber) {
+        if (colorNumber == 0 || colorNumber == 1) {
+            return TileColor.values()[colorNumber].awtColor;
+        }
+        return null;
     }
 
     public Piece generatePiece(Board board, Tile tile, String imageIcon, String pieceColorAsString) {
@@ -52,16 +59,6 @@ public class Tile extends JLabel {
         }
     }
 
-    public void updateTileAfterMove(String pieceType, String pieceColor){
-        this.setPiece(generatePiece(this.board, this, pieceType, pieceColor));
-        this.setIcon(pieceType, pieceColor);
-        this.setPieceColor(setColorFromString(pieceColor));
-    }
-
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    }
-
     private Color setColorFromString(String colorName) {
         Color color;
         try {
@@ -77,15 +74,8 @@ public class Tile extends JLabel {
         this.setIcon(new PieceIcon().loadIcon(pieceColor, pieceType));
     }
 
-    public static Color getColor(int colorNumber) {
-        if(colorNumber == 0 || colorNumber == 1) {
-            return TileColor.values()[colorNumber].awtColor;
-        }
-        return null;
-    }
-
-    public String getPieceColorAsString(){
-        if(this.pieceColor == Color.WHITE){
+    public String getPieceColorAsString() {
+        if (this.pieceColor == Color.WHITE) {
             return "WHITE";
         }
         return "BLACK";
@@ -95,30 +85,23 @@ public class Tile extends JLabel {
         return piece;
     }
 
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
     public void removePiece() {
         this.piece = null;
     }
 
-    public boolean tileIsEmpty(){
-        if(this.piece == null){
-            return true;
-        }
-        return false;
+    public boolean isEmpty() {
+        return this.piece == null;
     }
 
-    public void setPieceColor(Color pieceColor){
+    public void setPieceColor(Color pieceColor) {
         this.pieceColor = pieceColor;
     }
 
-    public void setPieceColorString(String pieceColor){
+    public void setPieceColorString(String pieceColor) {
         this.pieceColor = setColorFromString(pieceColor);
-    }
-
-    public String getPieceType() {
-        return pieceType;
-    }
-
-    public Board getBoard() {
-        return board;
     }
 }

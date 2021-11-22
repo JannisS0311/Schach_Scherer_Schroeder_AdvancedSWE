@@ -1,10 +1,9 @@
 package _2_domainPackage;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Rook implements Piece{
+public class Rook implements Piece {
 
     Tile actualTile;
     Board board;
@@ -16,20 +15,16 @@ public class Rook implements Piece{
         this.pieceColor = pieceColor;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation){
+    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
         if (oldLocation.getRowCoordinate() == newLocation.getRowCoordinate()) {
             return true;
-        }
-        else if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()){
-            return true;
-        }
-        return false;
+        } else return oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate();
     }
 
     @Override
     public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
         ArrayList<Location> location = new ArrayList<>();
-        if(oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()){
+        if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {
             int lowerRowValue = Math.min(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
             int higherRowValue = Math.max(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());
             for (int i = lowerRowValue + 1; i < higherRowValue; i++) {

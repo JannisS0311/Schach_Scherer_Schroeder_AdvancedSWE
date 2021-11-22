@@ -3,7 +3,7 @@ package _2_domainPackage;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class King implements Piece{
+public class King implements Piece {
 
     Tile actualTile;
     Board board;
@@ -15,38 +15,39 @@ public class King implements Piece{
         this.pieceColor = pieceColor;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        if(checkIfRowOrColStep(oldLocation, newLocation)
-                || checkIfDiagonalStep(oldLocation, newLocation)){
+    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
+        return checkIfRowOrColStep(oldLocation, newLocation)
+                || checkIfDiagonalStep(oldLocation, newLocation);
+    }
+
+    private boolean checkIfRowOrColStep(Location oldLocation, Location newLocation) {
+        int oldRow = oldLocation.getRowCoordinate();
+        int oldCol = oldLocation.getColumnCoordinate();
+        int newRow = newLocation.getRowCoordinate();
+        int newCol = newLocation.getColumnCoordinate();
+
+        if (oldCol == newCol && oldRow == newRow + 1) {
             return true;
-        }
-        return false;
+        } else if (oldCol == newCol && oldRow == newRow - 1) {
+            return true;
+        } else if (oldRow == newRow && oldCol == newCol + 1) {
+            return true;
+        } else return oldRow == newRow && oldCol == newCol - 1;
     }
 
-    private boolean checkIfRowOrColStep(Location oldLocation, Location newLocation){
+    private boolean checkIfDiagonalStep(Location oldLocation, Location newLocation) {
         int oldRow = oldLocation.getRowCoordinate();
         int oldCol = oldLocation.getColumnCoordinate();
         int newRow = newLocation.getRowCoordinate();
         int newCol = newLocation.getColumnCoordinate();
 
-        if(oldCol == newCol && oldRow == newRow + 1){ return true; }
-        else if(oldCol == newCol && oldRow == newRow - 1){ return true; }
-        else if(oldRow == newRow && oldCol == newCol + 1){ return true; }
-        else if(oldRow == newRow && oldCol == newCol - 1){ return true; }
-        return false;
-    }
-
-    private boolean checkIfDiagonalStep(Location oldLocation, Location newLocation){
-        int oldRow = oldLocation.getRowCoordinate();
-        int oldCol = oldLocation.getColumnCoordinate();
-        int newRow = newLocation.getRowCoordinate();
-        int newCol = newLocation.getColumnCoordinate();
-
-        if(oldCol == newCol + 1 && oldRow == newRow + 1){ return true; }
-        else if(oldCol == newCol + 1 && oldRow == newRow - 1){ return true; }
-        else if(oldCol == newCol - 1 && oldRow == newRow + 1){ return true; }
-        else if(oldCol == newCol - 1 && oldRow == newRow - 1){ return true; }
-        return false;
+        if (oldCol == newCol + 1 && oldRow == newRow + 1) {
+            return true;
+        } else if (oldCol == newCol + 1 && oldRow == newRow - 1) {
+            return true;
+        } else if (oldCol == newCol - 1 && oldRow == newRow + 1) {
+            return true;
+        } else return oldCol == newCol - 1 && oldRow == newRow - 1;
     }
 
     @Override

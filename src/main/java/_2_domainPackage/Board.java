@@ -1,15 +1,14 @@
 package _2_domainPackage;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Board {
 
-    private Tile[][] tiles = new Tile[8][8];
-
     private static final int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 8; //columns of the board
-
     private static final String[] pieceOrder = {"Rock", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rock"};
+    private final Tile[][] tiles = new Tile[8][8];
 
     /**
      * 8	r n b q k b n r
@@ -83,41 +82,63 @@ public class Board {
     ///////////////////////////////////////////////
 
     public void movePiece(Location oldLocation, Location newLocation) {
-        Piece chosenPiece = this.getTile(oldLocation.getRowCoordinate(), oldLocation.getColumnCoordinate()).getPiece();
+        Tile oldTile = getTileFromLocation(oldLocation);
+        Tile newTile = getTileFromLocation(newLocation);
+        Piece chosenPiece = oldTile.getPiece();
 
         ArrayList<Location> tilesInBetween = chosenPiece.getTilesInBetween(oldLocation, newLocation);
-
+        //TODO neue Klasse Move einführen?
         if (validNewLocation(newLocation)
-                && tilesBetweenAreEmpty(tilesInBetween)
+                && areLocationsEmpty(tilesInBetween)
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
-                && (newTileIsEmpty(newLocation) || newTileHasEnemiesPiece(oldLocation, newLocation))) {
+                && newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile)) {
             changeBoard(oldLocation, newLocation);
         }
     }
 
-    private boolean newTileIsEmpty(Location newLocation) {
-        boolean newTileIsEmpty = (tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPiece() == null);
-        return newTileIsEmpty;
+    private Tile getTileFromLocation(Location location) {
+        return tiles[location.getRowCoordinate()][location.getColumnCoordinate()];
     }
 
-    private boolean newTileHasEnemiesPiece(Location oldLocation, Location newLocation) {
-        String attackingPieceColor = tiles[oldLocation.getRowCoordinate()][oldLocation.getColumnCoordinate()].getPieceColorAsString();
-        String beatenPieceColor = tiles[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()].getPieceColorAsString();
-        if (!attackingPieceColor.equals(beatenPieceColor)) {
-            return true;
-        }
-        return false;
+    private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile) {
+        String attackingPieceColor = oldTile.getPieceColorAsString();
+        String beatenPieceColor = newTile.getPieceColorAsString();
+        return !attackingPieceColor.equals(beatenPieceColor);
     }
 
-    private boolean tilesBetweenAreEmpty(ArrayList<Location> tilesBetween) {
-        while (tilesBetween.size() != 0) {
-            if (tiles[tilesBetween.get(0).getRowCoordinate()][tilesBetween.get(0).getColumnCoordinate()].tileIsEmpty()) {
-                tilesBetween.remove(0);
-                continue;
-            }
-            return false;
+    //TODO neue Klasse move einführen?
+
+    private boolean areLocationsEmpty(ArrayList<Location> locations) {
+        for (int i = 0; i < locations.size(); i++) {
+            if (!getTileFromLocation(locations.get(i)).isEmpty())
+                return false;
         }
         return true;
+
+        /*
+        return locations.stream()
+            .map(location -> {
+                return getTileFromLocation(location);
+            })
+            .allMatch(tile -> {
+                return tile.isEmpty();
+            })
+        ;
+        */
+
+        /*
+        return locations.stream()
+                .map(this::getTileFromLocation)
+                .allMatch(Tile::isEmpty);
+        */
+
+        /*
+        for(Location location : locations) {
+            if(!getTileFromLocation(location).isEmpty())
+                return false;
+        }
+        return true;
+        */
     }
 
     private void changeBoard(Location oldLocation, Location newLocation) {
@@ -138,10 +159,7 @@ public class Board {
     private boolean validNewLocation(Location newLocation) {
         int row = newLocation.getRowCoordinate();
         int col = newLocation.getColumnCoordinate();
-        if (row < 0 || row > 7 || col < 0 || col > 7) {
-            return false;
-        }
-        return true;
+        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
     }
 
 }

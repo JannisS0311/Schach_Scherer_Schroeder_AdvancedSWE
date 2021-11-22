@@ -1,6 +1,6 @@
 package _2_domainPackage;
 
-import java.awt.Color;
+import java.awt.*;
 
 public enum TileColor {
     WHITE(Color.WHITE),

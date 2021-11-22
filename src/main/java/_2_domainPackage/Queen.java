@@ -18,18 +18,12 @@ public class Queen implements Piece {
     public boolean isMoveOkay(Location oldLocation, Location newLocation) {
         if (moveIsDiagonal(oldLocation, newLocation)) {
             return true;
-        } else if (moveIsStraight(oldLocation, newLocation)) {
-            return true;
-        }
-        return false;
+        } else return moveIsStraight(oldLocation, newLocation);
     }
 
     private boolean moveIsDiagonal(Location oldLocation, Location newLocation) {
-        if (Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()))
-                == Math.abs((oldLocation.getColumnCoordinate() - newLocation.getColumnCoordinate()))) {
-            return true;
-        }
-        return false;
+        return Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()))
+                == Math.abs((oldLocation.getColumnCoordinate() - newLocation.getColumnCoordinate()));
     }
 
     private int getNumberOfDiagonalSteps(Location oldLocation, Location newLocation) {
@@ -39,10 +33,7 @@ public class Queen implements Piece {
     private boolean moveIsStraight(Location oldLocation, Location newLocation) {
         if (oldLocation.getRowCoordinate() == newLocation.getRowCoordinate()) {
             return true;
-        } else if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {
-            return true;
-        }
-        return false;
+        } else return oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate();
     }
 
     @Override
@@ -74,19 +65,17 @@ public class Queen implements Piece {
 
     private ArrayList<Location> getTilesInBetweenDiagonal(Location oldLocation, Location newLocation) {
         int numberOfSteps = getNumberOfDiagonalSteps(oldLocation, newLocation);
-        if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()){
+        if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()) {
             return leftUpperDirection(oldLocation, newLocation, numberOfSteps);
-        }
-        else if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() < newLocation.getColumnCoordinate()){
+        } else if (oldLocation.getRowCoordinate() > newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() < newLocation.getColumnCoordinate()) {
             return rightUpperDirection(oldLocation, newLocation, numberOfSteps);
-        }
-        else if (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()){
+        } else if (oldLocation.getRowCoordinate() < newLocation.getRowCoordinate() && oldLocation.getColumnCoordinate() > newLocation.getColumnCoordinate()) {
             return leftLowerDirection(oldLocation, newLocation, numberOfSteps);
         }
         return rightLowerDirection(oldLocation, newLocation, numberOfSteps);
     }
 
-    private ArrayList<Location> leftUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+    private ArrayList<Location> leftUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         for (int i = 1; i < numberOfSteps; i++) {
             tilesInBetween.add(
@@ -95,7 +84,7 @@ public class Queen implements Piece {
         return tilesInBetween;
     }
 
-    private ArrayList<Location> rightUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+    private ArrayList<Location> rightUpperDirection(Location oldLocation, Location newLocation, int numberOfSteps) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         for (int i = 1; i < numberOfSteps; i++) {
             tilesInBetween.add(
@@ -104,7 +93,7 @@ public class Queen implements Piece {
         return tilesInBetween;
     }
 
-    private ArrayList<Location> leftLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+    private ArrayList<Location> leftLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         for (int i = 1; i < numberOfSteps; i++) {
             tilesInBetween.add(
@@ -113,7 +102,7 @@ public class Queen implements Piece {
         return tilesInBetween;
     }
 
-    private ArrayList<Location> rightLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps){
+    private ArrayList<Location> rightLowerDirection(Location oldLocation, Location newLocation, int numberOfSteps) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         for (int i = 1; i < numberOfSteps; i++) {
             tilesInBetween.add(

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public interface Piece {
 
-    public String imagePath = "src/main/resources/chesspieces/";
+    String imagePath = "src/main/resources/chesspieces/";
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation);
+    boolean isMoveOkay(Location oldLocation, Location newLocation);
 
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation);
+    ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation);
 
 }

@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class PieceIcon extends ImageIcon {
 
-    private String imagePath = "src/main/resources/chesspieces/";
+    private final String imagePath = "src/main/resources/chesspieces/";
 
     public PieceIcon() {
     }

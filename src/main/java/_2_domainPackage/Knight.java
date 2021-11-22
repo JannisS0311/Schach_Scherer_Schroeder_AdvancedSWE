@@ -3,7 +3,7 @@ package _2_domainPackage;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Knight implements Piece{
+public class Knight implements Piece {
 
     Tile actualTile;
     Board board;
@@ -15,23 +15,19 @@ public class Knight implements Piece{
         this.pieceColor = pieceColor;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation){
-        if(getRowSteps(oldLocation, newLocation) ==  2 && getColumnSteps(oldLocation, newLocation) == 1){
+    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
+        if (getRowSteps(oldLocation, newLocation) == 2 && getColumnSteps(oldLocation, newLocation) == 1) {
             return true;
-        }
-        else if(getRowSteps(oldLocation, newLocation) ==  1 && getColumnSteps(oldLocation, newLocation) == 2){
-            return true;
-        }
-        return false;
+        } else return getRowSteps(oldLocation, newLocation) == 1 && getColumnSteps(oldLocation, newLocation) == 2;
     }
 
-    private int getRowSteps(Location oldLocation, Location newLocation){
+    private int getRowSteps(Location oldLocation, Location newLocation) {
         int rowSteps = Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()));
         System.out.println(rowSteps);
         return rowSteps;
     }
 
-    private int getColumnSteps(Location oldLocation, Location newLocation){
+    private int getColumnSteps(Location oldLocation, Location newLocation) {
         int columnSteps = Math.abs((oldLocation.getColumnCoordinate()) - newLocation.getColumnCoordinate());
         System.out.println(columnSteps);
         return columnSteps;

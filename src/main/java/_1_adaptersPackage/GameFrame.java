@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class GameFrame extends JFrame {
 
-    private Board board;
+    private final Board board;
 
     public GameFrame(Board board) throws HeadlessException {
         this.board = board;
@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void fillTiles(){
+    private void fillTiles() {
         for (int i = 0; i < 64; i++) {
             int row = i / 8;
             int col = i % 8;

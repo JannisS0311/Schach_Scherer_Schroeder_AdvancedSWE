@@ -1,7 +1,8 @@
 package _0_mainPackage;
 
-import _2_domainPackage.*;
 import _1_adaptersPackage.GameFrame;
+import _2_domainPackage.Board;
+import _2_domainPackage.Location;
 
 public class Main {
 
