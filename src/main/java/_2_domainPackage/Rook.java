@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Rock implements Piece{
+public class Rook implements Piece{
 
     Tile actualTile;
     Board board;
     Color pieceColor;
 
-    public Rock(Tile actualTile, Board board, Color pieceColor) {
+    public Rook(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;

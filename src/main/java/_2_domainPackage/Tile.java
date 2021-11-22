@@ -43,7 +43,7 @@ public class Tile extends JLabel {
                 case "Knight":
                     return new Knight(tile, this.board, pieceColor);
                 case "Rock":
-                    return new Rock(tile, this.board, pieceColor);
+                    return new Rook(tile, this.board, pieceColor);
                 default:
                     return null;
             }
