@@ -16,6 +16,10 @@ public class Main {
         board.movePiece(new Location(7, 2), new Location(5, 4));
         board.movePiece(new Location(5, 4), new Location(3, 2));
         board.movePiece(new Location(3, 2), new Location(5, 4));
+
+
         GameFrame gameFrame = new GameFrame(board);
+        gameFrame.init();
+        gameFrame.play();
     }
 }

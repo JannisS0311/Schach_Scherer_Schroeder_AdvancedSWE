@@ -90,7 +90,8 @@ public class Board {
         if (validNewLocation(newLocation)
                 && tilesBetweenAreEmpty(tilesInBetween)
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
-                && (newTileIsEmpty(newLocation) || newTileHasEnemiesPiece(oldLocation, newLocation))) {
+                && (newTileIsEmpty(newLocation) || newTileHasEnemiesPiece(oldLocation, newLocation)))
+        {
             changeBoard(oldLocation, newLocation);
         }
     }
