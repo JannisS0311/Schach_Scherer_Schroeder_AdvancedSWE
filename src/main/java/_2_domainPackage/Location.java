@@ -12,12 +12,20 @@ public class Location {
         this.columnCoordinate = columnCoordinate;
     }
 
+    public Location() {
+    }
+
     public int getRowCoordinate() {
         return rowCoordinate;
     }
 
     public int getColumnCoordinate() {
         return columnCoordinate;
+    }
+
+    public void setLocation(int rowCoordinate, int columnCoordinate) {
+        this.rowCoordinate = rowCoordinate;
+        this.columnCoordinate = columnCoordinate;
     }
 
     @Override
