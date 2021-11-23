@@ -31,7 +31,8 @@ public class Pawn implements Piece {
     public boolean isMoveOkay(Location oldLocation, Location newLocation) {
         if (checkIfInTheSameColumn(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)
-                && checkIfStepNumberIsAllowed(oldLocation, newLocation)) {
+                && checkIfStepNumberIsAllowed(oldLocation, newLocation)
+                && !(checkIfNewTileIsOccupied(newLocation))) {
             return true;
         } else return checkIfMoveIsDiagonal(oldLocation, newLocation)
                 && checkIfNewTileIsOccupied(newLocation);
@@ -74,6 +75,6 @@ public class Pawn implements Piece {
 
     private boolean checkIfNewTileIsOccupied(Location newLocation) {
         boolean newTileIsOccupied = this.board.getTile(newLocation.getRowCoordinate(), newLocation.getColumnCoordinate()).isEmpty();
-        return !newTileIsOccupied;
+        return !(newTileIsOccupied);
     }
 }

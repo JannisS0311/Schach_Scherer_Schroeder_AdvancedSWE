@@ -9,6 +9,8 @@ public class Main {
     public static void main(String[] args) {
         Board board = new Board();
 
+        board.movePiece(new Location(6,0), new Location(5,1));
+
         GameFrame gameFrame = new GameFrame(board);
         gameFrame.init();
         gameFrame.play();

@@ -91,7 +91,7 @@ public class Board {
         if (validNewLocation(newLocation)
                 && areLocationsEmpty(tilesInBetween)
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
-                && newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile)) {
+                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile))) {
             changeBoard(oldLocation, newLocation);
         }
     }
@@ -103,7 +103,7 @@ public class Board {
     private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile) {
         String attackingPieceColor = oldTile.getPieceColorAsString();
         String beatenPieceColor = newTile.getPieceColorAsString();
-        return !attackingPieceColor.equals(beatenPieceColor);
+        return (beatenPieceColor != null) && !(attackingPieceColor.equals(beatenPieceColor));
     }
 
     //TODO neue Klasse move einführen?

@@ -75,10 +75,11 @@ public class Tile extends JLabel {
     }
 
     public String getPieceColorAsString() {
-        if (this.pieceColor == Color.WHITE) {
+        if (this.pieceColor == Color.WHITE)
             return "WHITE";
-        }
-        return "BLACK";
+        else if(this.pieceColor == Color.BLACK)
+            return "BLACK";
+        return null;
     }
 
     public Piece getPiece() {
