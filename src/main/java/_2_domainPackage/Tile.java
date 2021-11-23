@@ -9,36 +9,31 @@ public class Tile extends JLabel {
     private Location location;
 
     private Piece piece;
-    private final String pieceType;
     private Color pieceColor;
 
     private final Board board;
 
-    public Tile(Color tileColor, String pieceType, String pieceColor, Board board, int rowCoordinate, int columnCoordinate) {
-        this.setBackground(tileColor);
+    public Tile(String pieceType, String pieceColor, Board board, Location location) {
         this.pieceColor = setColorFromString(pieceColor);
-        this.pieceType = pieceType;
         setIcon(pieceColor, pieceType);
         this.board = board;
-        this.piece = generatePiece(this.board, this, pieceType, pieceColor);
-        this.location = new Location(rowCoordinate, columnCoordinate);
+        this.piece = generatePiece(this, pieceType, pieceColor);
+        this.location = location;
 
+        this.setBackground(getColor());
         this.setMinimumSize(new Dimension(20, 20));
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.setOpaque(true);
     }
 
-    public static Color getColor(int colorNumber) {
-        if (colorNumber == 0 || colorNumber == 1) {
-            return TileColor.values()[colorNumber].awtColor;
-        }
-        return null;
+    public Color getColor() {
+        return TileColor.values()[(this.location.getRowCoordinate() + this.location.getColumnCoordinate()) % 2].awtColor;
     }
 
-    public Piece generatePiece(Board board, Tile tile, String imageIcon, String pieceColorAsString) {
+    public Piece generatePiece(Tile tile, String pieceType, String pieceColorAsString) {
         Color pieceColor = setColorFromString(pieceColorAsString);
         try {
-            switch (imageIcon) {
+            switch (pieceType) {
                 case "Pawn":
                     return new Pawn(tile, this.board, pieceColor);
                 case "King":
@@ -65,7 +60,7 @@ public class Tile extends JLabel {
             Field field = Class.forName("java.awt.Color").getField(colorName);
             color = (Color) field.get(null);
         } catch (Exception e) {
-            color = null; // Not defined
+            color = null;
         }
         return color;
     }
@@ -82,6 +77,10 @@ public class Tile extends JLabel {
         return null;
     }
 
+    public boolean isEmpty() {
+        return this.piece == null;
+    }
+
     public Piece getPiece() {
         return piece;
     }
@@ -92,10 +91,6 @@ public class Tile extends JLabel {
 
     public void removePiece() {
         this.piece = null;
-    }
-
-    public boolean isEmpty() {
-        return this.piece == null;
     }
 
     public void setPieceColor(Color pieceColor) {

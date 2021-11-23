@@ -40,8 +40,8 @@ public class GameFrame extends JFrame {
         Scanner s = new Scanner(System.in);
         int oldY, oldX, newY, newX;
 
-        Location oldLocation = new Location();
-        Location newLocation = new Location();
+        Location oldLocation;
+        Location newLocation;
 
         while (gameRunning){
             System.out.println("Enter old piece y value");
@@ -49,16 +49,20 @@ public class GameFrame extends JFrame {
             System.out.println("Enter old piece x value");
             oldX = Integer.parseInt(s.nextLine());
 
-            oldLocation.setLocation(oldY,oldX);
+            oldLocation = new Location(oldY,oldX);
 
             System.out.println("Enter new piece y value");
             newY = Integer.parseInt(s.nextLine());
             System.out.println("Enter new piece x value");
             newX = Integer.parseInt(s.nextLine());
 
-            newLocation.setLocation(newY, newX);
+            newLocation = new Location(newY, newX);
 
-            board.movePiece(oldLocation, newLocation);
+            if(board.movePiece(oldLocation, newLocation)){
+                System.out.println("Move was correct!");
+                continue;
+            }
+            System.out.println("Sorry, your move isn't correct...");
         }
     }
 }

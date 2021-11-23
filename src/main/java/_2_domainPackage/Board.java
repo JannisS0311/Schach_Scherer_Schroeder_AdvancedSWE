@@ -38,7 +38,7 @@ public class Board {
             int rowCounter = i / 8;
             int columnCounter = i % 8;
             tiles[rowCounter][columnCounter] =
-                    new Tile(Tile.getColor((rowCounter + columnCounter) % 2), null, null, this, rowCounter, columnCounter);
+                    new Tile(null, null, this, new Location(rowCounter, columnCounter));
         }
         // fill the black pieces initially
         fillAllPiecesInitially("WHITE");
@@ -61,7 +61,7 @@ public class Board {
             rowNumber = 1;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile(Tile.getColor((rowNumber + columnCounter) % 2), "Pawn", pieceColor, Board.this, rowNumber, columnCounter);
+            tiles[rowNumber][columnCounter] = new Tile("Pawn", pieceColor, Board.this, new Location(rowNumber, columnCounter));
         }
     }
 
@@ -71,7 +71,7 @@ public class Board {
             rowNumber = 0;
         }
         for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile(Tile.getColor((rowNumber + columnCounter) % 2), pieceOrder[columnCounter], pieceColor, Board.this, rowNumber, columnCounter);
+            tiles[rowNumber][columnCounter] = new Tile(pieceOrder[columnCounter], pieceColor, Board.this, new Location(rowNumber, columnCounter));
         }
     }
 
@@ -81,7 +81,7 @@ public class Board {
 
     ///////////////////////////////////////////////
 
-    public void movePiece(Location oldLocation, Location newLocation) {
+    public boolean movePiece(Location oldLocation, Location newLocation) {
         Tile oldTile = getTileFromLocation(oldLocation);
         Tile newTile = getTileFromLocation(newLocation);
         Piece chosenPiece = oldTile.getPiece();
@@ -93,7 +93,9 @@ public class Board {
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
                 && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile))) {
             changeBoard(oldLocation, newLocation);
+            return true;
         }
+        return false;
     }
 
     private Tile getTileFromLocation(Location location) {
@@ -158,8 +160,8 @@ public class Board {
 
     private boolean validNewLocation(Location newLocation) {
         int row = newLocation.getRowCoordinate();
-        int col = newLocation.getColumnCoordinate();
-        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
+        int column = newLocation.getColumnCoordinate();
+        return row >= 0 && row <= 7 && column >= 0 && column <= 7;
     }
 
 }
