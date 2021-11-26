@@ -27,7 +27,7 @@ public class Board {
      **/
 
     public Board() {
-        fillBoardInitially();
+        this.fillBoardInitially();
     }
 
     private void fillBoardInitially() {

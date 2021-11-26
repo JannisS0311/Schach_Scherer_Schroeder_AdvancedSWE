@@ -18,7 +18,7 @@ public class GameFrame extends JFrame {
 
     public void init() {
         this.setLayout(new GridLayout(8, 8));
-        this.setSize(new Dimension(500, 500));
+        this.setSize(new Dimension(650, 650));
 
         this.fillTiles();
 
