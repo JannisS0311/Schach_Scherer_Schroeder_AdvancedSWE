@@ -58,11 +58,13 @@ public class GameFrame extends JFrame {
 
             newLocation = new Location(newY, newX);
 
-            if(board.movePiece(oldLocation, newLocation)){
+            try {
+                board.movePiece(oldLocation, newLocation);
                 System.out.println("Move was correct!");
-                continue;
             }
-            System.out.println("Sorry, your move isn't correct...");
+            catch (Exception e){
+                System.out.println("Sorry, your move isn't correct...");
+            }
         }
     }
 }
