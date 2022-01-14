@@ -10,6 +10,6 @@ public class Main {
         Board board = new Board();
         GameFrame gameFrame = new GameFrame(board);
         gameFrame.init();
-        gameFrame.play();
+        //gameFrame.play();
     }
 }

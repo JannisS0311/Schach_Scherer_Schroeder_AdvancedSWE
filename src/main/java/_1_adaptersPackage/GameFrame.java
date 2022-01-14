@@ -5,11 +5,14 @@ import _2_domainPackage.Location;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 public class GameFrame extends JFrame {
 
     private final Board board;
+    private final JTextArea loggingFrame = new JTextArea("Logged moves");
 
     public GameFrame(Board board) throws HeadlessException {
         this.board = board;
@@ -63,13 +66,32 @@ public class GameFrame extends JFrame {
         JPanel sideCenterPanel = new JPanel();
         sideCenterPanel.setPreferredSize(new Dimension(150, 100));
         JButton submit = new JButton("Move");
-        //TODO: Add Actionlistener
+
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int oldY, oldX, newY, newX;
+
+                oldY = Integer.parseInt(oldRowT.getText());
+                oldX = Integer.parseInt(oldColT.getText());
+                newY = Integer.parseInt(newRowT.getText());
+                newX = Integer.parseInt(newColT.getText());
+
+                move(oldY, oldX, newY, newX);
+
+                oldRowT.setText("");
+                oldColT.setText("");
+                newRowT.setText("");
+                newColT.setText("");
+            }
+        });
+
         sideCenterPanel.add(submit);
 
         JPanel sideBottomPanel = new JPanel();
         sideBottomPanel.setPreferredSize(new Dimension(150, 400));
-        JLabel loggingFrame = new JLabel("Logged Moves:");
         sideBottomPanel.add(loggingFrame);
+        loggingFrame.setEditable(false);
 
 
         sidePanel.add(sideTopPanel, BorderLayout.NORTH);
@@ -85,7 +107,7 @@ public class GameFrame extends JFrame {
             }
         }
     }
-
+    /*
     //TODO: Place in right spot
     public void play(){
         boolean gameRunning = true;
@@ -115,6 +137,18 @@ public class GameFrame extends JFrame {
                 continue;
             }
             System.out.println("Sorry, your move isn't correct...");
+        }
+    }
+    */
+
+    private void move(Integer oldY, Integer oldX, Integer newY, Integer newX){
+        Location oldLocation = new Location(oldY,oldX);
+        Location newLocation = new Location(newY, newX);
+
+        if(board.movePiece(oldLocation, newLocation)){
+            loggingFrame.append("\nMove: " + oldY + "," + oldX + " > " + newY + "," + newX);
+        }else {
+            loggingFrame.append("\nYour move isn't correct...");
         }
     }
 }
