@@ -51,7 +51,7 @@ public class King implements Piece {
     }
 
     @Override
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+    public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         return tilesInBetween;
     }

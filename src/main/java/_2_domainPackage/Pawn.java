@@ -15,7 +15,7 @@ public class Pawn implements Piece {
         this.pieceColor = pieceColor;
     }
 
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+    public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         if (checkIfOneStep(oldLocation, newLocation)) {
             return tilesInBetween;
@@ -74,7 +74,9 @@ public class Pawn implements Piece {
     }
 
     private boolean checkIfNewTileIsOccupied(Location newLocation) {
-        boolean newTileIsOccupied = this.board.getTile(newLocation.getRowCoordinate(), newLocation.getColumnCoordinate()).isEmpty();
+        boolean newTileIsOccupied = this.board.getSquareFromLocation(
+                new Location(newLocation.getRowCoordinate(), newLocation.getColumnCoordinate()))
+                .getTile().isEmpty();
         return !(newTileIsOccupied);
     }
 }

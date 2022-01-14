@@ -34,7 +34,7 @@ public class Knight implements Piece {
     }
 
     @Override
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+    public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         // doesn't matter because knight is allowed to jump over other pieces
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         return tilesInBetween;

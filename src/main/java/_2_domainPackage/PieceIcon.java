@@ -16,8 +16,4 @@ public class PieceIcon extends ImageIcon {
         return icon;
     }
 
-    public String getIconPath(){
-        return imagePath + pieceName + ".png";
-    }
-
 }

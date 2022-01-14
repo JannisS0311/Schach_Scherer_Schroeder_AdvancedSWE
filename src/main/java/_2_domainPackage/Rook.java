@@ -22,7 +22,7 @@ public class Rook implements Piece {
     }
 
     @Override
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+    public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         ArrayList<Location> location = new ArrayList<>();
         if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {
             int lowerRowValue = Math.min(oldLocation.getRowCoordinate(), newLocation.getRowCoordinate());

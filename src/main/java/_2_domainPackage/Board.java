@@ -1,27 +1,26 @@
 package _2_domainPackage;
 
+import _1_adaptersPackage.Square;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Board {
 
     private static final int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 8; //columns of the board
-    private static final String[] pieceOrder = {"Rock", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rock"};
-    private final Tile[][] tiles = new Tile[8][8];
+    private static final String[] pieceOrder = {null, "Rock", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rock"};
+    private final Square[][] squares = new Square[9][9];
 
     /**
-     * 8	r n b q k b n r
-     * 7	p p p p p p p p
-     * 6	. . . . . . . .
-     * 5	. . . . . . . .
-     * 4	. . . . . . . .
+     * 0    1 2 3 4 5 6 7 8
+     * 1    r n b q k b n r
+     * 2	p p p p p p p p
      * 3	. . . . . . . .
-     * 2	P P P P P P P P
-     * 1    R N B Q K B N R
-     * <p>
-     * a b c d e f g h
-     * <p>
+     * 4	. . . . . . . .
+     * 5	. . . . . . . .
+     * 6	. . . . . . . .
+     * 7	P P P P P P P P
+     * 8    R N B Q K B N R
+     *
      * P=pawn, K=king, Q=queen, R=rook, N=knight, B=Bishop
      * Uppercase is white
      **/
@@ -31,17 +30,27 @@ public class Board {
     }
 
     private void fillBoardInitially() {
+        fillColumnLabeling();
         // fill the white pieces initially:
         fillAllPiecesInitially("BLACK");
         // fill the empty spaces:
-        for (int i = 16; i < 48; i++) {
-            int rowCounter = i / 8;
-            int columnCounter = i % 8;
-            tiles[rowCounter][columnCounter] =
-                    new Tile(null, null, this, new Location(rowCounter, columnCounter));
+        for (int row = 3; row < 7; row++) {
+            squares[row][0] =
+                    new Square(String.valueOf(row));
+            for (int col = 1; col < 9; col++) {
+                squares[row][col] =
+                        new Square(new Tile(null, null, this, new Location(row, col)));
+            }
         }
         // fill the black pieces initially
         fillAllPiecesInitially("WHITE");
+    }
+
+    private void fillColumnLabeling(){
+        squares[0][0] = new Square("");
+        for (int col = 1; col < 9; col++) {
+            squares[0][col] = new Square(String.valueOf((char) (col+96)));
+        }
     }
 
     private void fillAllPiecesInitially(String pieceColor) {
@@ -56,37 +65,37 @@ public class Board {
     }
 
     private void fillLineWithPawnsInitially(String pieceColor) {
-        int rowNumber = 6;
+        int rowNumber = 7;
         if (pieceColor == "BLACK") {
-            rowNumber = 1;
+            rowNumber = 2;
         }
-        for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile("Pawn", pieceColor, Board.this, new Location(rowNumber, columnCounter));
+        squares[rowNumber][0] =
+                new Square(String.valueOf(rowNumber));
+        for (int columnCounter = 1; columnCounter < 9; columnCounter++) {
+            squares[rowNumber][columnCounter] = new Square(new Tile("Pawn", pieceColor, Board.this, new Location(rowNumber, columnCounter)));
         }
     }
 
     private void fillLineWithTilesExceptPawnsInitially(String pieceColor) {
-        int rowNumber = 7;
+        int rowNumber = 8;
         if (pieceColor == "BLACK") {
-            rowNumber = 0;
+            rowNumber = 1;
         }
-        for (int columnCounter = 0; columnCounter < 8; columnCounter++) {
-            tiles[rowNumber][columnCounter] = new Tile(pieceOrder[columnCounter], pieceColor, Board.this, new Location(rowNumber, columnCounter));
+        squares[rowNumber][0] =
+                new Square(String.valueOf(rowNumber));
+        for (int columnCounter = 1; columnCounter < 9; columnCounter++) {
+            squares[rowNumber][columnCounter] = new Square(new Tile(pieceOrder[columnCounter], pieceColor, Board.this, new Location(rowNumber, columnCounter)));
         }
-    }
-
-    public Tile getTile(int rowCoordinate, int columnCoordinate) {
-        return tiles[rowCoordinate][columnCoordinate];
     }
 
     ///////////////////////////////////////////////
 
     public boolean movePiece(Location oldLocation, Location newLocation) {
-        Tile oldTile = getTileFromLocation(oldLocation);
-        Tile newTile = getTileFromLocation(newLocation);
+        Tile oldTile = getSquareFromLocation(oldLocation).getTile();
+        Tile newTile = getSquareFromLocation(newLocation).getTile();
         Piece chosenPiece = oldTile.getPiece();
 
-        ArrayList<Location> tilesInBetween = chosenPiece.getTilesInBetween(oldLocation, newLocation);
+        ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
         //TODO neue Klasse Move einführen?
         if (validNewLocation(newLocation)
                 && areLocationsEmpty(tilesInBetween)
@@ -98,8 +107,8 @@ public class Board {
         return false;
     }
 
-    private Tile getTileFromLocation(Location location) {
-        return tiles[location.getRowCoordinate()][location.getColumnCoordinate()];
+    public Square getSquareFromLocation(Location location) {
+        return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
     }
 
     private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile) {
@@ -112,7 +121,7 @@ public class Board {
 
     private boolean areLocationsEmpty(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
-            if (!getTileFromLocation(locations.get(i)).isEmpty())
+            if (!getSquareFromLocation(locations.get(i)).getTile().isEmpty())
                 return false;
         }
         return true;
@@ -149,19 +158,21 @@ public class Board {
         int newRow = newLocation.getRowCoordinate();
         int newCol = newLocation.getColumnCoordinate();
 
-        Tile oldTile = this.getTile(oldRow, oldLocation.getColumnCoordinate());
-        this.tiles[newRow][newCol].setPiece(oldTile.getPiece());
-        this.tiles[newRow][newCol].setIcon(oldTile.getIcon());
-        this.tiles[newRow][newCol].setPieceColorString(oldTile.getPieceColorAsString());
-        this.tiles[oldRow][oldCol].setIcon(null);
-        this.tiles[oldRow][oldCol].removePiece();
-        this.tiles[oldRow][oldCol].setPieceColor(null);
+        Tile oldTile = this.getSquareFromLocation(new Location(oldRow, oldLocation.getColumnCoordinate())).getTile();
+        this.squares[newRow][newCol] = new Square(new Tile(oldTile.getPiece().getClass().toString(),
+                oldTile.getPieceColorAsString(),
+                this,
+                new Location(newRow, oldRow)));
+        this.squares[oldRow][oldCol] = new Square(new Tile(null,
+                null,
+                this,
+                new Location(oldRow, oldCol)));
     }
 
     private boolean validNewLocation(Location newLocation) {
         int row = newLocation.getRowCoordinate();
         int column = newLocation.getColumnCoordinate();
-        return row >= 0 && row <= 7 && column >= 0 && column <= 7;
+        return row >= 1 && row <= 8 && column >= 1 && column <= 8;
     }
 
 }

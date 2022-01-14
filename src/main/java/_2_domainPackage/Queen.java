@@ -37,7 +37,7 @@ public class Queen implements Piece {
     }
 
     @Override
-    public ArrayList<Location> getTilesInBetween(Location oldLocation, Location newLocation) {
+    public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         if (moveIsDiagonal(oldLocation, newLocation)) {
             return getTilesInBetweenDiagonal(oldLocation, newLocation);
         }

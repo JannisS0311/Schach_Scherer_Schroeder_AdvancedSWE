@@ -17,7 +17,7 @@ public class GameFrame extends JFrame {
     }
 
     public void init() {
-        this.setLayout(new GridLayout(8, 8));
+        this.setLayout(new GridLayout(9, 9));
         this.setSize(new Dimension(650, 650));
 
         this.fillTiles();
@@ -27,10 +27,10 @@ public class GameFrame extends JFrame {
     }
 
     private void fillTiles() {
-        for (int i = 0; i < 64; i++) {
-            int row = i / 8;
-            int col = i % 8;
-            this.add(this.board.getTile(row, col));
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                this.add(this.board.getSquareFromLocation(new Location(row, col)));
+            }
         }
     }
 
@@ -44,27 +44,25 @@ public class GameFrame extends JFrame {
         Location newLocation;
 
         while (gameRunning){
-            System.out.println("Enter old piece y value");
+            System.out.println("Enter old piece row value");
             oldY = Integer.parseInt(s.nextLine());
-            System.out.println("Enter old piece x value");
+            System.out.println("Enter old piece column value");
             oldX = Integer.parseInt(s.nextLine());
 
             oldLocation = new Location(oldY,oldX);
 
-            System.out.println("Enter new piece y value");
+            System.out.println("Enter new piece row value");
             newY = Integer.parseInt(s.nextLine());
-            System.out.println("Enter new piece x value");
+            System.out.println("Enter new piece column value");
             newX = Integer.parseInt(s.nextLine());
 
             newLocation = new Location(newY, newX);
 
-            try {
-                board.movePiece(oldLocation, newLocation);
+            if(board.movePiece(oldLocation, newLocation)){
                 System.out.println("Move was correct!");
+                continue;
             }
-            catch (Exception e){
-                System.out.println("Sorry, your move isn't correct...");
-            }
+            System.out.println("Sorry, your move isn't correct...");
         }
     }
 }
