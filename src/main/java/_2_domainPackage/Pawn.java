@@ -20,11 +20,11 @@ public class Pawn implements Piece {
         if (checkIfOneStep(oldLocation, newLocation)) {
             return tilesInBetween;
         }
-        if (oldLocation.getRowCoordinate() == 1) {
-            tilesInBetween.add(new Location(2, oldLocation.getColumnCoordinate()));
+        if (oldLocation.getRowCoordinate() == 2) {
+            tilesInBetween.add(new Location(3, oldLocation.getColumnCoordinate()));
             return tilesInBetween;
         }
-        tilesInBetween.add(new Location(5, oldLocation.getColumnCoordinate()));
+        tilesInBetween.add(new Location(6, oldLocation.getColumnCoordinate()));
         return tilesInBetween;
     }
 
@@ -57,9 +57,9 @@ public class Pawn implements Piece {
     }
 
     private boolean checkIfInitiallyTwoSteps(Location oldLocation, Location newLocation) {
-        if (oldLocation.getRowCoordinate() == 1 && newLocation.getRowCoordinate() == 3) {
+        if (oldLocation.getRowCoordinate() == 2 && newLocation.getRowCoordinate() == 4) {
             return true;
-        } else return oldLocation.getRowCoordinate() == 6 && newLocation.getRowCoordinate() == 4;
+        } else return oldLocation.getRowCoordinate() == 7 && newLocation.getRowCoordinate() == 5;
     }
 
     private boolean checkIfOneStep(Location oldLocation, Location newLocation) {

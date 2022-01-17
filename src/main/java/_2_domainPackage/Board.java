@@ -159,10 +159,7 @@ public class Board {
         int newCol = newLocation.getColumnCoordinate();
 
         Tile oldTile = this.getSquareFromLocation(new Location(oldRow, oldLocation.getColumnCoordinate())).getTile();
-        this.squares[newRow][newCol] = new Square(new Tile(oldTile.getPiece().getClass().toString(),
-                oldTile.getPieceColorAsString(),
-                this,
-                new Location(newRow, oldRow)));
+        this.squares[newRow][newCol].setTile(oldTile);
         this.squares[oldRow][oldCol] = new Square(new Tile(null,
                 null,
                 this,
