@@ -9,6 +9,7 @@ public class Tile {
     private Location location;
 
     private Piece piece;
+    private String PieceType;
     private Color pieceColor;
     private Color backgroundColor;
     private ImageIcon icon;
@@ -18,6 +19,7 @@ public class Tile {
 
     public Tile(String pieceType, String pieceColor, Board board, Location location) {
         this.pieceColor = setColorFromString(pieceColor);
+        this.PieceType = pieceType;
         this.board = board;
         this.piece = generatePiece(this, pieceType, pieceColor);
         this.icon = new PieceIcon(pieceColor, pieceType).loadIcon();
@@ -89,5 +91,8 @@ public class Tile {
         return icon;
     }
 
+    public String getPieceType(){
+        return PieceType;
+    }
 
 }

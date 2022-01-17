@@ -33,6 +33,10 @@ public class Square extends JLabel {
         this.setOpaque(true);
     }
 
+    public void updateSquare(){
+
+    }
+
     public Tile getTile() {
         return tile;
     }

@@ -13,6 +13,7 @@ public class GameFrame extends JFrame {
 
     private final Board board;
     private final JTextArea loggingFrame = new JTextArea("Logged moves");
+    private JPanel mainPanel = new JPanel();
 
     public GameFrame(Board board) throws HeadlessException {
         this.board = board;
@@ -24,13 +25,12 @@ public class GameFrame extends JFrame {
         this.setSize(new Dimension(750, 650));
         this.setLayout(new BorderLayout());
 
-        JPanel mainPanel = new JPanel();
         JPanel sidePanel = new JPanel();
 
         this.add(mainPanel, BorderLayout.CENTER);
         this.add(sidePanel, BorderLayout.EAST);
 
-        this.fillTiles(mainPanel);
+        this.fillTiles();
         this.fillSide(sidePanel);
 
 
@@ -99,13 +99,26 @@ public class GameFrame extends JFrame {
         sidePanel.add(sideBottomPanel, BorderLayout.SOUTH);
     }
 
-    private void fillTiles(JPanel mainPanel) {
+    private void fillTiles() {
         mainPanel.setLayout(new GridLayout(9, 9));
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 mainPanel.add(this.board.getSquareFromLocation(new Location(row, col)));
             }
         }
+    }
+
+    private void updateTiles(){
+        mainPanel.removeAll();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        mainPanel.setLayout(new GridLayout(9, 9));
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                mainPanel.add(this.board.getSquareFromLocation(new Location(row, col)));
+            }
+        }
+        this.add(mainPanel, BorderLayout.CENTER);
     }
     /*
     //TODO: Place in right spot
@@ -147,6 +160,7 @@ public class GameFrame extends JFrame {
 
         if(board.movePiece(oldLocation, newLocation)){
             loggingFrame.append("\nMove: " + oldY + "," + oldX + " > " + newY + "," + newX);
+            this.updateTiles();
         }else {
             loggingFrame.append("\nYour move isn't correct...");
         }
