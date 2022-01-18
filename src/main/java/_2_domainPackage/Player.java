@@ -9,7 +9,7 @@ public class Player {
 
     public Player(Color color){
         this.color = color;
-        this.score = 2;
+        this.score = 0;
     }
 
     public Integer getScore() {
