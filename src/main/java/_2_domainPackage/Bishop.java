@@ -33,6 +33,11 @@ public class Bishop implements Piece {
         return rightLowerDirection(oldLocation, newLocation, numberOfSteps);
     }
 
+    @Override
+    public Color getPieceColor() {
+        return pieceColor;
+    }
+
     private int getNumberOfDiagonalSteps(Location oldLocation, Location newLocation) {
         return Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()));
     }

@@ -39,4 +39,9 @@ public class Knight implements Piece {
         ArrayList<Location> tilesInBetween = new ArrayList<>();
         return tilesInBetween;
     }
+
+    @Override
+    public Color getPieceColor() {
+        return pieceColor;
+    }
 }

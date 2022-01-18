@@ -28,6 +28,11 @@ public class Pawn implements Piece {
         return tilesInBetween;
     }
 
+    @Override
+    public Color getPieceColor() {
+        return pieceColor;
+    }
+
     public boolean isMoveOkay(Location oldLocation, Location newLocation) {
         if (checkIfInTheSameColumn(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)

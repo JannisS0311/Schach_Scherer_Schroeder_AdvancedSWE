@@ -44,6 +44,11 @@ public class Queen implements Piece {
         return getTilesInBetweenStraight(oldLocation, newLocation);
     }
 
+    @Override
+    public Color getPieceColor() {
+        return pieceColor;
+    }
+
     private ArrayList<Location> getTilesInBetweenStraight(Location oldLocation, Location newLocation) {
         ArrayList<Location> location = new ArrayList<>();
         if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {

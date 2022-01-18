@@ -90,17 +90,21 @@ public class Board {
 
     ///////////////////////////////////////////////
 
-    public boolean movePiece(Location oldLocation, Location newLocation) {
+    public boolean movePiece(Location oldLocation, Location newLocation, Game game) {
         Tile oldTile = getSquareFromLocation(oldLocation).getTile();
         Tile newTile = getSquareFromLocation(newLocation).getTile();
         Piece chosenPiece = oldTile.getPiece();
 
         ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
         //TODO neue Klasse Move einführen?
-        if (validNewLocation(newLocation)
+        if (
+                playersTurn(chosenPiece, game)
+                &&validNewLocation(newLocation)
                 && areLocationsEmpty(tilesInBetween)
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
-                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile))) {
+                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile))
+            )
+        {
             changeBoard(oldLocation, newLocation);
             return true;
         }
@@ -173,6 +177,10 @@ public class Board {
         int row = newLocation.getRowCoordinate();
         int column = newLocation.getColumnCoordinate();
         return row >= 1 && row <= 8 && column >= 1 && column <= 8;
+    }
+
+    private boolean playersTurn(Piece piece, Game game){
+        return piece.getPieceColor() == game.getTurn();
     }
 
 }

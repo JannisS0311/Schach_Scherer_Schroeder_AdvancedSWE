@@ -1,7 +1,9 @@
 package _1_adaptersPackage;
 
 import _2_domainPackage.Board;
+import _2_domainPackage.Game;
 import _2_domainPackage.Location;
+import _2_domainPackage.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +14,18 @@ import java.util.Scanner;
 public class GameFrame extends JFrame {
 
     private final Board board;
+    private final Game game;
+    private Player playerOne;
+    private Player playerTwo;
+
     private final JTextArea loggingFrame = new JTextArea("Logged moves");
     private JPanel mainPanel = new JPanel();
 
-    public GameFrame(Board board) throws HeadlessException {
+    public GameFrame(Board board, Game game) throws HeadlessException {
         this.board = board;
-        //this.init();
+        this.game = game;
+        this.playerOne = new Player(Color.WHITE);
+        this.playerTwo = new Player(Color.BLACK);
     }
 
     public void init() {
@@ -120,47 +128,23 @@ public class GameFrame extends JFrame {
         }
         this.add(mainPanel, BorderLayout.CENTER);
     }
-    /*
-    //TODO: Place in right spot
-    public void play(){
-        boolean gameRunning = true;
-        Scanner s = new Scanner(System.in);
-        int oldY, oldX, newY, newX;
 
-        Location oldLocation;
-        Location newLocation;
-
-        while (gameRunning){
-            System.out.println("Enter old piece row value");
-            oldY = Integer.parseInt(s.nextLine());
-            System.out.println("Enter old piece column value");
-            oldX = Integer.parseInt(s.nextLine());
-
-            oldLocation = new Location(oldY,oldX);
-
-            System.out.println("Enter new piece row value");
-            newY = Integer.parseInt(s.nextLine());
-            System.out.println("Enter new piece column value");
-            newX = Integer.parseInt(s.nextLine());
-
-            newLocation = new Location(newY, newX);
-
-            if(board.movePiece(oldLocation, newLocation)){
-                System.out.println("Move was correct!");
-                continue;
-            }
-            System.out.println("Sorry, your move isn't correct...");
+    private void setTurn() {
+        if (game.getTurn() == Color.WHITE){
+            game.setTurn(Color.BLACK);
+        }else {
+            game.setTurn(Color.WHITE);
         }
     }
-    */
 
     private void move(Integer oldY, Integer oldX, Integer newY, Integer newX){
         Location oldLocation = new Location(oldY,oldX);
         Location newLocation = new Location(newY, newX);
 
-        if(board.movePiece(oldLocation, newLocation)){
+        if(board.movePiece(oldLocation, newLocation, this.game)){
             loggingFrame.append("\nMove: " + oldY + "," + oldX + " > " + newY + "," + newX);
             this.updateTiles();
+            this.setTurn();
         }else {
             loggingFrame.append("\nYour move isn't correct...");
         }

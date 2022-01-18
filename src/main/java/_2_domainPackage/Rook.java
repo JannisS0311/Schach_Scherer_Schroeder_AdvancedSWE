@@ -40,4 +40,9 @@ public class Rook implements Piece {
         }
         return location;
     }
+
+    @Override
+    public Color getPieceColor() {
+        return pieceColor;
+    }
 }
