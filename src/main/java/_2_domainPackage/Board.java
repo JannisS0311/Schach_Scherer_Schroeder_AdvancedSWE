@@ -98,11 +98,12 @@ public class Board {
         ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
         //TODO neue Klasse Move einführen?
         if (
-                playersTurn(chosenPiece, game)
+                game.getRunning()
+                &&playersTurn(chosenPiece, game)
                 &&validNewLocation(newLocation)
                 && areLocationsEmpty(tilesInBetween)
                 && chosenPiece.isMoveOkay(oldLocation, newLocation)
-                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile))
+                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
             )
         {
             changeBoard(oldLocation, newLocation);
@@ -111,14 +112,27 @@ public class Board {
         return false;
     }
 
+    private void checkGameOver(Game game, String pieceType) {
+        if (pieceType == "King"){
+            game.setRunning(false);
+        }
+    }
+
     public Square getSquareFromLocation(Location location) {
         return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
     }
 
-    private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile) {
+    private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile, Game game) {
         String attackingPieceColor = oldTile.getPieceColorAsString();
         String beatenPieceColor = newTile.getPieceColorAsString();
-        return (beatenPieceColor != null) && !(attackingPieceColor.equals(beatenPieceColor));
+        String beatenPieceType = newTile.getPieceType();
+
+        if ((beatenPieceColor != null) && !(attackingPieceColor.equals(beatenPieceColor))){
+            this.checkGameOver(game,beatenPieceType);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     //TODO neue Klasse move einführen?

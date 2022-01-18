@@ -6,20 +6,21 @@ import _2_domainPackage.Location;
 import _2_domainPackage.Player;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 public class GameFrame extends JFrame {
 
-    private final Board board;
-    private final Game game;
-    private Player playerOne;
-    private Player playerTwo;
+    private Board board;
+    private Game game;
+    private final Player playerOne;
+    private final Player playerTwo;
 
-    private final JTextArea loggingFrame = new JTextArea("Logged moves");
-    private JPanel mainPanel = new JPanel();
+    private JTextArea loggingFrame = new JTextArea("Logged moves");
+    private final JPanel mainPanel = new JPanel();
+    private final JPanel sidePanel = new JPanel();
 
     public GameFrame(Board board, Game game) throws HeadlessException {
         this.board = board;
@@ -33,20 +34,18 @@ public class GameFrame extends JFrame {
         this.setSize(new Dimension(750, 650));
         this.setLayout(new BorderLayout());
 
-        JPanel sidePanel = new JPanel();
-
         this.add(mainPanel, BorderLayout.CENTER);
         this.add(sidePanel, BorderLayout.EAST);
 
         this.fillTiles();
-        this.fillSide(sidePanel);
+        this.fillSide();
 
 
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void fillSide(JPanel sidePanel){
+    private void fillSide(){
         sidePanel.setLayout(new BorderLayout());
 
         JPanel sideTopPanel = new JPanel();
@@ -75,36 +74,66 @@ public class GameFrame extends JFrame {
         sideCenterPanel.setPreferredSize(new Dimension(150, 100));
         JButton submit = new JButton("Move");
 
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int oldY, oldX, newY, newX;
+        submit.addActionListener(e -> {
+            int oldY, oldX, newY, newX;
 
-                oldY = Integer.parseInt(oldRowT.getText());
-                oldX = Integer.parseInt(oldColT.getText());
-                newY = Integer.parseInt(newRowT.getText());
-                newX = Integer.parseInt(newColT.getText());
+            oldY = Integer.parseInt(oldRowT.getText());
+            oldX = Integer.parseInt(oldColT.getText());
+            newY = Integer.parseInt(newRowT.getText());
+            newX = Integer.parseInt(newColT.getText());
 
-                move(oldY, oldX, newY, newX);
+            oldRowT.setText("");
+            oldColT.setText("");
+            newRowT.setText("");
+            newColT.setText("");
 
-                oldRowT.setText("");
-                oldColT.setText("");
-                newRowT.setText("");
-                newColT.setText("");
-            }
+            oldRowT.requestFocusInWindow();
+
+            move(oldY, oldX, newY, newX);
         });
 
         sideCenterPanel.add(submit);
 
         JPanel sideBottomPanel = new JPanel();
+        sideBottomPanel.setLayout(new BorderLayout());
         sideBottomPanel.setPreferredSize(new Dimension(150, 400));
-        sideBottomPanel.add(loggingFrame);
+
+        sideBottomPanel.add(loggingFrame, BorderLayout.CENTER);
         loggingFrame.setEditable(false);
 
+        JPanel sideBottomBottomPanel = new JPanel();
+        sideBottomBottomPanel.setLayout(new GridLayout(2,2));
+        //sideBottomBottomPanel.setPreferredSize(new Dimension(150, 100));
+        sideBottomBottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        JLabel scorePlayerOne =  new JLabel(playerOne.getScore().toString());
+        scorePlayerOne.setBackground(Color.WHITE);
+        scorePlayerOne.setOpaque(true);
+        JLabel scorePlayerTwo = new JLabel(playerTwo.getScore().toString());
+        scorePlayerTwo.setBackground(Color.BLACK);
+        scorePlayerTwo.setForeground(Color.WHITE);
+        scorePlayerTwo.setOpaque(true);
+        JButton resetGame = new JButton("New Game");
+        JButton resetScores = new JButton("New Scores");
+
+        resetGame.setMargin(new Insets(0,0,0,0));
+        resetGame.addActionListener(e -> this.resetGame());
+
+        resetScores.setMargin(new Insets(0,0,0,0));
+        resetScores.addActionListener(e -> this.resetScores());
+
+        sideBottomBottomPanel.add(scorePlayerOne);
+        sideBottomBottomPanel.add(scorePlayerTwo);
+        sideBottomBottomPanel.add(resetGame);
+        sideBottomBottomPanel.add(resetScores);
+
+        sideBottomPanel.add(sideBottomBottomPanel, BorderLayout.SOUTH);
 
         sidePanel.add(sideTopPanel, BorderLayout.NORTH);
         sidePanel.add(sideCenterPanel, BorderLayout.CENTER);
         sidePanel.add(sideBottomPanel, BorderLayout.SOUTH);
+
+        this.getRootPane().setDefaultButton(submit);
     }
 
     private void fillTiles() {
@@ -137,6 +166,47 @@ public class GameFrame extends JFrame {
         }
     }
 
+    private void checkRunning() {
+        if (!game.getRunning()){
+            this.enterScore();
+        }
+    }
+
+    private void enterScore(){
+        if (game.getTurn() == Color.WHITE){
+            playerTwo.setScore(playerTwo.getScore()+1);
+        }else {
+            playerOne.setScore(playerOne.getScore()+1);
+        }
+        sidePanel.removeAll();
+        sidePanel.revalidate();
+        sidePanel.repaint();
+        this.fillSide();
+    }
+
+    private void resetGame(){
+        mainPanel.removeAll();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        sidePanel.removeAll();
+        sidePanel.revalidate();
+        sidePanel.repaint();
+        this.game = new Game();
+        this.board = new Board();
+        this.loggingFrame = new JTextArea("Logged moves");
+        this.fillTiles();
+        this.fillSide();
+    }
+
+    private void resetScores(){
+        playerOne.setScore(0);
+        playerTwo.setScore(0);
+        sidePanel.removeAll();
+        sidePanel.revalidate();
+        sidePanel.repaint();
+        this.fillSide();
+    }
+
     private void move(Integer oldY, Integer oldX, Integer newY, Integer newX){
         Location oldLocation = new Location(oldY,oldX);
         Location newLocation = new Location(newY, newX);
@@ -145,6 +215,7 @@ public class GameFrame extends JFrame {
             loggingFrame.append("\nMove: " + oldY + "," + oldX + " > " + newY + "," + newX);
             this.updateTiles();
             this.setTurn();
+            this.checkRunning();
         }else {
             loggingFrame.append("\nYour move isn't correct...");
         }
