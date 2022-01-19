@@ -1,0 +1,10 @@
+Timeline:
+
+-vorerst: Code-Substrat erstellen, dabei passende Stelle für ein Entwurfsmuster identifizieren und zu gegebener Zeit reinbasteln
+-bis 7.11.: Gedanken machen über Clean Architecture und Entwurf erstellen
+-Programming Principles im Hinterkopf behalten und an entsprechenden Stellen umsetzen
+-im Anschluss (im neuen Jahr): Refactoring, Domain-Driven-Design und Tests 
+
+-Dokumentation parallel zur Umsetzung und vorerst über Github, bei Bedarf anderes Tool nutzen
+
+Deadline: 30.04.2022 23:59 Uhr
