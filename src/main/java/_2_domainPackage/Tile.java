@@ -95,4 +95,7 @@ public class Tile {
         return PieceType;
     }
 
+    public Location getLocation() {
+        return this.location;
+    }
 }
