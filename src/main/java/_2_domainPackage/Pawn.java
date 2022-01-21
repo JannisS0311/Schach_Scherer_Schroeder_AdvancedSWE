@@ -8,11 +8,27 @@ public class Pawn implements Piece {
     Tile actualTile;
     Board board;
     Color pieceColor;
+    private boolean hasMoved;
 
     public Pawn(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
+        this.hasMoved = false;
+    }
+
+    @Override
+    public boolean isMoveOkay(Tile oldTile, Tile newTile) {
+        Location oldLocation = oldTile.getLocation();
+        Location newLocation = newTile.getLocation();
+
+        if (checkIfInTheSameColumn(oldLocation, newLocation)
+                && checkIfMoveIsForwards(oldLocation, newLocation)
+                && checkIfStepNumberIsAllowed(oldLocation, newLocation)
+                && !(checkIfNewTileIsOccupied(newLocation))) {
+            return true;
+        } else return checkIfMoveIsDiagonal(oldLocation, newLocation)
+                && checkIfNewTileIsOccupied(newLocation);
     }
 
     public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
@@ -33,15 +49,17 @@ public class Pawn implements Piece {
         return pieceColor;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
-        if (checkIfInTheSameColumn(oldLocation, newLocation)
-                && checkIfMoveIsForwards(oldLocation, newLocation)
-                && checkIfStepNumberIsAllowed(oldLocation, newLocation)
-                && !(checkIfNewTileIsOccupied(newLocation))) {
-            return true;
-        } else return checkIfMoveIsDiagonal(oldLocation, newLocation)
-                && checkIfNewTileIsOccupied(newLocation);
+    @Override
+    public boolean getHasMoved() {
+        return hasMoved;
     }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
+    }
+
+
 
     private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
         Integer oldColumnNumber = oldLocation.getColumnCoordinate();

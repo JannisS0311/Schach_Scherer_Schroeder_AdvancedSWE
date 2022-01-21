@@ -8,16 +8,20 @@ public class Bishop implements Piece {
     Tile actualTile;
     Board board;
     Color pieceColor;
+    private boolean hasMoved;
 
     public Bishop(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
+        this.hasMoved = false;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
-        return Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()))
-                == Math.abs((oldLocation.getColumnCoordinate() - newLocation.getColumnCoordinate()));
+
+    @Override
+    public boolean isMoveOkay(Tile oldTile, Tile newTile) {
+        return Math.abs((oldTile.getLocation().getRowCoordinate() - newTile.getLocation().getRowCoordinate()))
+                == Math.abs((oldTile.getLocation().getColumnCoordinate() - newTile.getLocation().getColumnCoordinate()));
     }
 
     @Override
@@ -36,6 +40,16 @@ public class Bishop implements Piece {
     @Override
     public Color getPieceColor() {
         return pieceColor;
+    }
+
+    @Override
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 
     private int getNumberOfDiagonalSteps(Location oldLocation, Location newLocation) {

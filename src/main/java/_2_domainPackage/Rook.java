@@ -8,17 +8,20 @@ public class Rook implements Piece {
     Tile actualTile;
     Board board;
     Color pieceColor;
+    private boolean hasMoved;
 
     public Rook(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
+        this.hasMoved = false;
     }
 
-    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
-        if (oldLocation.getRowCoordinate() == newLocation.getRowCoordinate()) {
+    @Override
+    public boolean isMoveOkay(Tile oldTile, Tile newTile) {
+        if (oldTile.getLocation().getRowCoordinate() == newTile.getLocation().getRowCoordinate()) {
             return true;
-        } else return oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate();
+        } else return oldTile.getLocation().getColumnCoordinate() == newTile.getLocation().getColumnCoordinate();
     }
 
     @Override
@@ -44,5 +47,15 @@ public class Rook implements Piece {
     @Override
     public Color getPieceColor() {
         return pieceColor;
+    }
+
+    @Override
+    public boolean getHasMoved() {
+        return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 }

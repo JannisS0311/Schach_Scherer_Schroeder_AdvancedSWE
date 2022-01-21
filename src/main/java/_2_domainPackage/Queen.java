@@ -8,17 +8,13 @@ public class Queen implements Piece {
     Tile actualTile;
     Board board;
     Color pieceColor;
+    private boolean hasMoved;
 
     public Queen(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
-    }
-
-    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
-        if (moveIsDiagonal(oldLocation, newLocation)) {
-            return true;
-        } else return moveIsStraight(oldLocation, newLocation);
+        this.hasMoved = false;
     }
 
     private boolean moveIsDiagonal(Location oldLocation, Location newLocation) {
@@ -37,6 +33,13 @@ public class Queen implements Piece {
     }
 
     @Override
+    public boolean isMoveOkay(Tile oldTile, Tile newTile) {
+        if (moveIsDiagonal(oldTile.getLocation(), newTile.getLocation())) {
+            return true;
+        } else return moveIsStraight(oldTile.getLocation(), newTile.getLocation());
+    }
+
+    @Override
     public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         if (moveIsDiagonal(oldLocation, newLocation)) {
             return getTilesInBetweenDiagonal(oldLocation, newLocation);
@@ -47,6 +50,16 @@ public class Queen implements Piece {
     @Override
     public Color getPieceColor() {
         return pieceColor;
+    }
+
+    @Override
+    public boolean getHasMoved() {
+        return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 
     private ArrayList<Location> getTilesInBetweenStraight(Location oldLocation, Location newLocation) {

@@ -7,11 +7,14 @@ public interface Piece {
 
     String imagePath = "src/main/resources/chesspieces/";
 
-    boolean isMoveOkay(Location oldLocation, Location newLocation);
+    boolean isMoveOkay(Tile oldTile, Tile newTile);
 
     ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation);
 
     Color getPieceColor();
+
+    boolean getHasMoved();
+    void setHasMoved();
     
     private boolean areTilesBetweenEmtpy(ArrayList<Tile> tilesBetween){
         for (Tile tile: tilesBetween

@@ -102,11 +102,12 @@ public class Board {
                 &&playersTurn(chosenPiece, game)
                 &&validNewLocation(newLocation)
                 && areLocationsEmpty(tilesInBetween)
-                && chosenPiece.isMoveOkay(oldLocation, newLocation)
+                && chosenPiece.isMoveOkay(oldTile, newTile)
                 && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
             )
         {
             changeBoard(oldLocation, newLocation);
+            chosenPiece.setHasMoved();
             return true;
         }
         return false;
@@ -170,7 +171,7 @@ public class Board {
         */
     }
 
-    private void changeBoard(Location oldLocation, Location newLocation) {
+    public void changeBoard(Location oldLocation, Location newLocation) {
         int oldRow = oldLocation.getRowCoordinate();
         int oldCol = oldLocation.getColumnCoordinate();
         int newRow = newLocation.getRowCoordinate();

@@ -8,17 +8,13 @@ public class Knight implements Piece {
     Tile actualTile;
     Board board;
     Color pieceColor;
+    private boolean hasMoved;
 
     public Knight(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
         this.board = board;
         this.pieceColor = pieceColor;
-    }
-
-    public boolean isMoveOkay(Location oldLocation, Location newLocation) {
-        if (getRowSteps(oldLocation, newLocation) == 2 && getColumnSteps(oldLocation, newLocation) == 1) {
-            return true;
-        } else return getRowSteps(oldLocation, newLocation) == 1 && getColumnSteps(oldLocation, newLocation) == 2;
+        this.hasMoved = false;
     }
 
     private int getRowSteps(Location oldLocation, Location newLocation) {
@@ -34,6 +30,13 @@ public class Knight implements Piece {
     }
 
     @Override
+    public boolean isMoveOkay(Tile oldTile, Tile newTile) {
+        if (getRowSteps(oldTile.getLocation(), newTile.getLocation()) == 2 && getColumnSteps(oldTile.getLocation(), newTile.getLocation()) == 1) {
+            return true;
+        } else return getRowSteps(oldTile.getLocation(), newTile.getLocation()) == 1 && getColumnSteps(oldTile.getLocation(), newTile.getLocation()) == 2;
+    }
+
+    @Override
     public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
         // doesn't matter because knight is allowed to jump over other pieces
         ArrayList<Location> tilesInBetween = new ArrayList<>();
@@ -43,5 +46,15 @@ public class Knight implements Piece {
     @Override
     public Color getPieceColor() {
         return pieceColor;
+    }
+
+    @Override
+    public boolean getHasMoved() {
+        return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 }
