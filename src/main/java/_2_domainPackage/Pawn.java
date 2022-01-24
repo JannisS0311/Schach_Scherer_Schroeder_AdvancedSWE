@@ -52,10 +52,10 @@ public class Pawn implements Piece {
     private boolean checkEnPassant(Tile oldTile, Tile newTile) {
         if (Objects.equals(this.board.getSquareFromLocation(new Location(oldTile.getLocation().getRowCoordinate(), newTile.getLocation().getColumnCoordinate())).getTile().getPieceType(), "Pawn"))
         {
-            Location enPassantPawn = new Location(oldTile.getLocation().getRowCoordinate(), newTile.getLocation().getColumnCoordinate());
-            Piece enPassantPawn = this.board.getSquareFromLocation(enPassantPawn).getTile().getPiece();
+            Location enPassantPawnLocation = new Location(oldTile.getLocation().getRowCoordinate(), newTile.getLocation().getColumnCoordinate());
+            Piece enPassantPawn = this.board.getSquareFromLocation(enPassantPawnLocation).getTile().getPiece();
             if (enPassantPawn.getEnPassant()){
-                this.board.disappearPiece(enPassantPawn);
+                this.board.disappearPiece(enPassantPawnLocation);
                 return true;
             }else {
                 return false;
