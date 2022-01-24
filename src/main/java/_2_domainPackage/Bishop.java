@@ -52,6 +52,16 @@ public class Bishop implements Piece {
         this.hasMoved = true;
     }
 
+    @Override
+    public boolean getEnPassant() {
+        return false;
+    }
+
+    @Override
+    public void setEnPassant(boolean enPassant) {
+
+    }
+
     private int getNumberOfDiagonalSteps(Location oldLocation, Location newLocation) {
         return Math.abs((oldLocation.getRowCoordinate() - newLocation.getRowCoordinate()));
     }

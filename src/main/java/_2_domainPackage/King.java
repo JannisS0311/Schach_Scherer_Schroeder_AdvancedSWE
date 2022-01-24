@@ -143,4 +143,14 @@ public class King implements Piece {
     public void setHasMoved() {
         this.hasMoved = true;
     }
+
+    @Override
+    public boolean getEnPassant() {
+        return false;
+    }
+
+    @Override
+    public void setEnPassant(boolean enPassant) {
+
+    }
 }

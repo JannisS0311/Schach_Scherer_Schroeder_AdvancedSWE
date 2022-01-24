@@ -15,6 +15,9 @@ public interface Piece {
 
     boolean getHasMoved();
     void setHasMoved();
+
+    boolean getEnPassant();
+    void setEnPassant(boolean enPassant);
     
     private boolean areTilesBetweenEmtpy(ArrayList<Tile> tilesBetween){
         for (Tile tile: tilesBetween

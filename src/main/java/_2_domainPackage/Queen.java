@@ -62,6 +62,16 @@ public class Queen implements Piece {
         this.hasMoved = true;
     }
 
+    @Override
+    public boolean getEnPassant() {
+        return false;
+    }
+
+    @Override
+    public void setEnPassant(boolean enPassant) {
+
+    }
+
     private ArrayList<Location> getTilesInBetweenStraight(Location oldLocation, Location newLocation) {
         ArrayList<Location> location = new ArrayList<>();
         if (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate()) {

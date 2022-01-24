@@ -2,6 +2,7 @@ package _2_domainPackage;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Pawn implements Piece {
 
@@ -9,6 +10,7 @@ public class Pawn implements Piece {
     Board board;
     Color pieceColor;
     private boolean hasMoved;
+    private boolean enPassant;
 
     public Pawn(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
@@ -24,11 +26,43 @@ public class Pawn implements Piece {
 
         if (checkIfInTheSameColumn(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)
-                && checkIfStepNumberIsAllowed(oldLocation, newLocation)
-                && !(checkIfNewTileIsOccupied(newLocation))) {
+                && !(checkIfNewTileIsOccupied(newLocation))
+                && checkIfOneStep(oldLocation, newLocation)
+        ) {
             return true;
-        } else return checkIfMoveIsDiagonal(oldLocation, newLocation)
-                && checkIfNewTileIsOccupied(newLocation);
+        } else if (checkIfInTheSameColumn(oldLocation, newLocation)
+                && checkIfMoveIsForwards(oldLocation, newLocation)
+                && !(checkIfNewTileIsOccupied(newLocation))
+                && checkIfInitiallyTwoSteps(oldLocation, newLocation)
+        ){
+            this.setEnPassant(true);
+            return true;
+        }else if (checkIfMoveIsDiagonal(oldLocation, newLocation)
+                && checkIfMoveIsForwards(oldLocation, newLocation)
+                && checkIfNewTileIsOccupied(newLocation)){
+            return true;
+        }else {
+            return checkIfMoveIsDiagonal(oldLocation, newLocation)
+                   && checkIfMoveIsForwards(oldLocation, newLocation)
+                   && !checkIfNewTileIsOccupied(newLocation)
+                   && checkEnPassant(oldTile, newTile);
+        }
+    }
+
+    private boolean checkEnPassant(Tile oldTile, Tile newTile) {
+        if (Objects.equals(this.board.getSquareFromLocation(new Location(oldTile.getLocation().getRowCoordinate(), newTile.getLocation().getColumnCoordinate())).getTile().getPieceType(), "Pawn"))
+        {
+            Location enPassantPawn = new Location(oldTile.getLocation().getRowCoordinate(), newTile.getLocation().getColumnCoordinate());
+            Piece enPassantPawn = this.board.getSquareFromLocation(enPassantPawn).getTile().getPiece();
+            if (enPassantPawn.getEnPassant()){
+                this.board.disappearPiece(enPassantPawn);
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 
     public ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation) {
@@ -59,7 +93,14 @@ public class Pawn implements Piece {
         this.hasMoved = true;
     }
 
+    public boolean getEnPassant() {
+        return enPassant;
+    }
 
+    @Override
+    public void setEnPassant(boolean enPassant) {
+       this.enPassant = enPassant;
+    }
 
     private boolean checkIfInTheSameColumn(Location oldLocation, Location newLocation) {
         Integer oldColumnNumber = oldLocation.getColumnCoordinate();
@@ -92,8 +133,9 @@ public class Pawn implements Piece {
     }
 
     private boolean checkIfMoveIsDiagonal(Location oldLocation, Location newLocation) {
-        return oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() + 1 ||
-                oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() - 1;
+        return (oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() + 1 ||
+                oldLocation.getColumnCoordinate() == newLocation.getColumnCoordinate() - 1);
+                //&&;
     }
 
     private boolean checkIfNewTileIsOccupied(Location newLocation) {

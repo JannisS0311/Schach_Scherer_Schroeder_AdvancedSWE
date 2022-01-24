@@ -2,7 +2,9 @@ package _2_domainPackage;
 
 import _1_adaptersPackage.Square;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Board {
 
@@ -108,9 +110,29 @@ public class Board {
         {
             changeBoard(oldLocation, newLocation);
             chosenPiece.setHasMoved();
+            resetEnPassant(chosenPiece.getPieceColor(), newTile);
             return true;
         }
         return false;
+    }
+
+    private void resetEnPassant(Color pieceColor, Tile newTile) {
+        int row = 4;
+        Location currLocation;
+
+        if (pieceColor == Color.WHITE){
+            row = 5;
+        }
+        for (int i = 1; i<9;i++){
+            currLocation = new Location(row, i);
+            Tile currTile = this.getSquareFromLocation(currLocation).getTile();
+            if (Objects.equals(currTile.getPieceType(), "Pawn")
+                && !currTile.getLocation().equals(newTile.getLocation())
+            ){
+                Pawn enPassantPawn = (Pawn) this.getSquareFromLocation(currLocation).getTile().getPiece();
+                enPassantPawn.setEnPassant(false);
+            }
+        }
     }
 
     private void checkGameOver(Game game, String pieceType) {
@@ -181,7 +203,8 @@ public class Board {
         this.squares[newRow][newCol] = new Square(new Tile(oldTile.getPieceType(),
                 oldTile.getPieceColorAsString(),
                 this,
-                newLocation));
+                newLocation,
+                oldTile.getPiece()));
         this.squares[oldRow][oldCol] = new Square(new Tile(null,
                 null,
                 this,
@@ -196,6 +219,16 @@ public class Board {
 
     private boolean playersTurn(Piece piece, Game game){
         return piece.getPieceColor() == game.getTurn();
+    }
+
+    public void disappearPiece(Location oldLocation){
+        int oldRow = oldLocation.getRowCoordinate();
+        int oldCol = oldLocation.getColumnCoordinate();
+
+        this.squares[oldRow][oldCol] = new Square(new Tile(null,
+                null,
+                this,
+                oldLocation));
     }
 
 }
