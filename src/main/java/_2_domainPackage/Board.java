@@ -111,9 +111,16 @@ public class Board {
             changeBoard(oldLocation, newLocation);
             chosenPiece.setHasMoved();
             resetEnPassant(chosenPiece.getPieceColor(), newTile);
+            checkQueen(oldLocation, newLocation);
             return true;
         }
         return false;
+    }
+
+    private void checkQueen(Location oldLocation, Location newLocation){
+        if (newLocation.getRowCoordinate() == 1 || newLocation.getRowCoordinate() == 8){
+            this.makeQueen(newLocation);
+        }
     }
 
     private void resetEnPassant(Color pieceColor, Tile newTile) {
@@ -231,4 +238,10 @@ public class Board {
                 oldLocation));
     }
 
+    public void makeQueen(Location newLocation) {
+        this.squares[newLocation.getRowCoordinate()][newLocation.getColumnCoordinate()] = new Square(new Tile("Queen",
+                this.getSquareFromLocation(newLocation).getTile().getPieceColorAsString(),
+                this,
+                newLocation));
+    }
 }

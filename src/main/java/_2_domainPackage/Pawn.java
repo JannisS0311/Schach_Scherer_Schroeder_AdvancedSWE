@@ -24,24 +24,32 @@ public class Pawn implements Piece {
         Location oldLocation = oldTile.getLocation();
         Location newLocation = newTile.getLocation();
 
+        //1 step forward
         if (checkIfInTheSameColumn(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)
                 && !(checkIfNewTileIsOccupied(newLocation))
                 && checkIfOneStep(oldLocation, newLocation)
         ) {
             return true;
-        } else if (checkIfInTheSameColumn(oldLocation, newLocation)
+        }
+        //2 steps forward
+        else if (checkIfInTheSameColumn(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)
                 && !(checkIfNewTileIsOccupied(newLocation))
                 && checkIfInitiallyTwoSteps(oldLocation, newLocation)
         ){
             this.setEnPassant(true);
             return true;
-        }else if (checkIfMoveIsDiagonal(oldLocation, newLocation)
+        }
+        //Diagonal/Capture Move
+        else if (checkIfMoveIsDiagonal(oldLocation, newLocation)
                 && checkIfMoveIsForwards(oldLocation, newLocation)
-                && checkIfNewTileIsOccupied(newLocation)){
+                && checkIfNewTileIsOccupied(newLocation)
+                ){
             return true;
-        }else {
+        }
+        //En Passant
+        else {
             return checkIfMoveIsDiagonal(oldLocation, newLocation)
                    && checkIfMoveIsForwards(oldLocation, newLocation)
                    && !checkIfNewTileIsOccupied(newLocation)
