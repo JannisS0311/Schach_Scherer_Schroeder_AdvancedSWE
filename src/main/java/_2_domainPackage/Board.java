@@ -118,7 +118,9 @@ public class Board {
     }
 
     private void checkQueen(Location oldLocation, Location newLocation){
-        if (newLocation.getRowCoordinate() == 1 || newLocation.getRowCoordinate() == 8){
+        if ((newLocation.getRowCoordinate() == 1 || newLocation.getRowCoordinate() == 8)
+            && Objects.equals(this.getSquareFromLocation(newLocation).getTile().getPieceType(), "Pawn")
+            ){
             this.makeQueen(newLocation);
         }
     }
