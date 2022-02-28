@@ -246,4 +246,8 @@ public class Board {
                 this,
                 newLocation));
     }
+
+    public void moveBack(Location oldLocation, Location newLocation){
+        changeBoard(oldLocation, newLocation);
+    }
 }
