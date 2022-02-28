@@ -197,4 +197,7 @@ public class Board {
         return piece.getPieceColor() == game.getTurn();
     }
 
+    public void moveBack(Location oldLocation, Location newLocation){
+        changeBoard(oldLocation, newLocation);
+    }
 }

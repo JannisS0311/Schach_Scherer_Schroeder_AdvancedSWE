@@ -6,10 +6,7 @@ import _2_domainPackage.Location;
 import _2_domainPackage.Player;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
 
@@ -114,18 +111,18 @@ public class GameFrame extends JFrame {
         scorePlayerTwo.setForeground(Color.WHITE);
         scorePlayerTwo.setOpaque(true);
         JButton resetGame = new JButton("New Game");
-        JButton resetScores = new JButton("New Scores");
+        JButton moveBack = new JButton("Back");
 
         resetGame.setMargin(new Insets(0,0,0,0));
         resetGame.addActionListener(e -> this.resetGame());
 
-        resetScores.setMargin(new Insets(0,0,0,0));
-        resetScores.addActionListener(e -> this.resetScores());
+        moveBack.setMargin(new Insets(0,0,0,0));
+        moveBack.addActionListener(e -> this.moveBack());
 
         sideBottomBottomPanel.add(scorePlayerOne);
         sideBottomBottomPanel.add(scorePlayerTwo);
         sideBottomBottomPanel.add(resetGame);
-        sideBottomBottomPanel.add(resetScores);
+        sideBottomBottomPanel.add(moveBack);
 
         sideBottomPanel.add(sideBottomBottomPanel, BorderLayout.SOUTH);
 
@@ -198,13 +195,16 @@ public class GameFrame extends JFrame {
         this.fillSide();
     }
 
-    private void resetScores(){
-        playerOne.setScore(0);
-        playerTwo.setScore(0);
-        sidePanel.removeAll();
-        sidePanel.revalidate();
-        sidePanel.repaint();
-        this.fillSide();
+    private void moveBack(){
+        Location origin = this.game.getLastMoveOrigin();
+        Location target = this.game.getLastMoveTarget();
+
+        board.moveBack(target, origin);
+
+        this.game.setLastMoveOrigin(target);
+        this.game.setLastMoveTarget(origin);
+        this.setTurn();
+        this.updateTiles();
     }
 
     private void move(Integer oldY, Integer oldX, Integer newY, Integer newX){
@@ -213,6 +213,8 @@ public class GameFrame extends JFrame {
 
         if(board.movePiece(oldLocation, newLocation, this.game)){
             loggingFrame.append("\nMove: " + oldY + "," + oldX + " > " + newY + "," + newX);
+            this.game.setLastMoveOrigin(oldLocation);
+            this.game.setLastMoveTarget(newLocation);
             this.updateTiles();
             this.setTurn();
             this.checkRunning();
