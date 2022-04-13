@@ -15,6 +15,10 @@ public class Tile {
     private ImageIcon icon;
     private final Board board;
 
+    public Tile (Board board){
+        this.board = board;
+    }
+
     public Tile(String pieceType, String pieceColor, Board board, Location location) {
         this.pieceColor = setColorFromString(pieceColor);
         this.PieceType = pieceType;

@@ -144,7 +144,7 @@ public class Board {
         }
     }
 
-    private void checkGameOver(Game game, String pieceType) {
+    public void checkGameOver(Game game, String pieceType) {
         if (pieceType == "King"){
             game.setRunning(false);
         }
@@ -169,7 +169,7 @@ public class Board {
 
     //TODO neue Klasse move einführen?
 
-    private boolean areLocationsEmpty(ArrayList<Location> locations) {
+    public boolean areLocationsEmpty(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
             if (!getSquareFromLocation(locations.get(i)).getTile().isEmpty())
                 return false;

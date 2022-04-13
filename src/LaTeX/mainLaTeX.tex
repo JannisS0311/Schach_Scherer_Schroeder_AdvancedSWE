@@ -44,6 +44,7 @@
 \usepackage{pgf-pie}
 \usepackage{pdfpages}
 \usepackage{setspace}
+\usepackage{biblatex}
 
 
 % Hierdurch werden Schusterjungen und Hurenkinder vermieden, d.h. einzelne Wörter
@@ -193,7 +194,7 @@
     \input{OtherInput/erklaerung}
 
     % Jetzt kommt der "eigentliche" Text
-    \input{Chapters/Chapter1}
+    \input{Chapters/ProgrammingPrinciples.tex}
 
 
     % Ab hier beginnt der Anhang
@@ -213,15 +214,16 @@
 % sortiert und sind durch abgekürzte Verfasserbuchstaben plus
 % Erscheinungsjahr in eckigen Klammern gekennzeichnet.
 
-% \bibliographystyle{alphadin}
-% \bibliography{bericht}
+ %\bibliographystyle{alphadin}
+ %\bibliography{bericht}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BIBLATEX
     %Benutzt man das "biblatex"-Paket, muß man folgendes schreiben:
     \def\refname{Literaturverzeichnis}
-%\bibliographystyle{apacite}
+    %\bibliographystyle{apacite}
     \printbibliography
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\include{changelog}
