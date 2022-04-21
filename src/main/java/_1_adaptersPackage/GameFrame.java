@@ -1,14 +1,16 @@
 package _1_adaptersPackage;
 
-import _2_domainPackage.Board;
-import _2_domainPackage.Game;
-import _2_domainPackage.Location;
-import _2_domainPackage.Player;
+import _2_domainPackage.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame implements ActionListener {
 
     private Board board;
     private Game game;
@@ -16,8 +18,14 @@ public class GameFrame extends JFrame {
     private final Player playerTwo;
 
     private JTextArea loggingFrame = new JTextArea("Logged moves");
+    private JList<BoardState> boardStateJList = new JList();
+    private ListSelectionModel listSelectionModel;
+    private DefaultListModel listModel;
+    private JButton saveBoardStateButton;
+
     private final JPanel mainPanel = new JPanel();
     private final JPanel sidePanel = new JPanel();
+
 
     public GameFrame(Board board, Game game) throws HeadlessException {
         this.board = board;
@@ -92,15 +100,44 @@ public class GameFrame extends JFrame {
         sideCenterPanel.add(submit);
 
         JPanel sideBottomPanel = new JPanel();
-        sideBottomPanel.setLayout(new BorderLayout());
+        sideBottomPanel.setLayout(new GridLayout(4,1));
         sideBottomPanel.setPreferredSize(new Dimension(150, 400));
 
-        sideBottomPanel.add(loggingFrame, BorderLayout.CENTER);
+        sideBottomPanel.add(loggingFrame);
         loggingFrame.setEditable(false);
+
+        listModel = new DefaultListModel();
+
+        boardStateJList = new JList(this.board.getBoardStates().toArray());
+        boardStateJList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        boardStateJList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        boardStateJList.setVisibleRowCount(-1);
+
+        boardStateJList.setModel(listModel);
+
+        listSelectionModel = boardStateJList.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (boardStateJList.getSelectedIndex() != -1) {
+                    board.setBoardState(boardStateJList.getSelectedIndex());
+                    updateTilesFromBoardState(board.getBoardStates().get(boardStateJList.getSelectedIndex()));
+                    boardStateJList.clearSelection();
+                }
+            }
+        });
+
+        JScrollPane listScroller = new JScrollPane(boardStateJList);
+        listScroller.setPreferredSize(new Dimension(250, 80));
+        sideBottomPanel.add(listScroller);
+
+        saveBoardStateButton = new JButton("Save Board State");
+        saveBoardStateButton.addActionListener(this);
+        sideBottomPanel.add(saveBoardStateButton);
 
         JPanel sideBottomBottomPanel = new JPanel();
         sideBottomBottomPanel.setLayout(new GridLayout(2,2));
-        //sideBottomBottomPanel.setPreferredSize(new Dimension(150, 100));
+        sideBottomBottomPanel.setSize(new Dimension(150, 100));
         sideBottomBottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
         JLabel scorePlayerOne =  new JLabel(playerOne.getScore().toString());
@@ -150,6 +187,19 @@ public class GameFrame extends JFrame {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 mainPanel.add(this.board.getSquareFromLocation(new Location(row, col)));
+            }
+        }
+        this.add(mainPanel, BorderLayout.CENTER);
+    }
+
+    private void updateTilesFromBoardState(BoardState boardState){
+        mainPanel.removeAll();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        mainPanel.setLayout(new GridLayout(9, 9));
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                mainPanel.add(boardState.getSquare(row, col));
             }
         }
         this.add(mainPanel, BorderLayout.CENTER);
@@ -220,6 +270,17 @@ public class GameFrame extends JFrame {
             this.checkRunning();
         }else {
             loggingFrame.append("\nYour move isn't correct...");
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.saveBoardStateButton){
+            BoardState currentBoardState = new BoardState(this.board.getCurrentBoardState());
+            this.board.saveBoardState();
+            this.listModel.addElement(currentBoardState + Integer.toString(this.board.getBoardStates().size()));
+            this.boardStateJList.setModel(listModel);
+            this.boardStateJList.updateUI();
         }
     }
 }

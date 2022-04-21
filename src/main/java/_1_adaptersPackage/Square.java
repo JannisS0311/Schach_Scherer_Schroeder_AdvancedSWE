@@ -40,4 +40,8 @@ public class Square extends JLabel {
     public void setTile(Tile tile) {
         this.tile = tile;
     }
+
+    public String getLabeling() {
+        return labeling;
+    }
 }

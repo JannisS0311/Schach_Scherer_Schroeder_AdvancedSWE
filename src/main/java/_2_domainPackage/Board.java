@@ -4,13 +4,16 @@ import _1_adaptersPackage.Square;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Board {
 
     private static final int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 8; //columns of the board
-    private static final String[] pieceOrder = {null, "Rock", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rock"};
+    private static final String[] pieceOrder = {null, "Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
     private final Square[][] squares = new Square[9][9];
+    private List<BoardState> boardStates = new ArrayList<>();
 
     /**
      * 0    1 2 3 4 5 6 7 8
@@ -250,4 +253,39 @@ public class Board {
     public void moveBack(Location oldLocation, Location newLocation){
         changeBoard(oldLocation, newLocation);
     }
+
+    public void saveBoardState(){
+        this.boardStates.add(new BoardState(squares.clone()));
+    }
+
+    public void setBoardState(int i){
+        for (int rowCounter = 0; rowCounter < 9; rowCounter++) {
+            for (int columnCounter = 0; columnCounter < 9; columnCounter++) {
+                Tile storedTile = boardStates.get(i).getSquare(rowCounter, columnCounter).getTile();
+                if (storedTile != null) {
+                    this.squares[rowCounter][columnCounter] = new Square(new Tile(storedTile.getPieceType(),
+                            storedTile.getPieceColorAsString(),
+                            this,
+                            storedTile.getLocation(),
+                            storedTile.getPiece()));
+                    continue;
+                }
+                Square storedSquare = boardStates.get(i).getSquare(rowCounter, columnCounter);
+                this.squares[rowCounter][columnCounter] = new Square(storedSquare.getLabeling());
+            }
+        }
+    }
+
+    public List<BoardState> getBoardStates() {
+        return boardStates;
+    }
+
+    public Square[][] getCurrentBoardState(){
+        final Square[][] currentSquares = new Square[9][0];
+        for (int i = 0; i < 9; i++) {
+            currentSquares[i] = Arrays.copyOf(squares[i], squares[i].length);
+        }
+        return currentSquares;
+    }
+
 }
