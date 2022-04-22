@@ -254,8 +254,8 @@ public class Board {
         changeBoard(oldLocation, newLocation);
     }
 
-    public void saveBoardState(){
-        this.boardStates.add(new BoardState(squares.clone()));
+    public void saveBoardState(BoardState boardState){
+        this.boardStates.add(boardState);
     }
 
     public void setBoardState(int i){

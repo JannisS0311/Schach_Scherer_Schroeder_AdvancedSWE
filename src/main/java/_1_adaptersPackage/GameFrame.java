@@ -122,6 +122,7 @@ public class GameFrame extends JFrame implements ActionListener {
                 if (boardStateJList.getSelectedIndex() != -1) {
                     board.setBoardState(boardStateJList.getSelectedIndex());
                     updateTilesFromBoardState(board.getBoardStates().get(boardStateJList.getSelectedIndex()));
+                    game.setTurn(board.getBoardStates().get(boardStateJList.getSelectedIndex()).getTurn());
                     boardStateJList.clearSelection();
                 }
             }
@@ -276,8 +277,9 @@ public class GameFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveBoardStateButton){
-            BoardState currentBoardState = new BoardState(this.board.getCurrentBoardState());
-            this.board.saveBoardState();
+            BoardState currentBoardState = new BoardState(this.board.getCurrentBoardState(), this.game.getTurn());
+            this.board.saveBoardState(currentBoardState);
+            System.out.println(currentBoardState.getTurn());
             this.listModel.addElement(currentBoardState + Integer.toString(this.board.getBoardStates().size()));
             this.boardStateJList.setModel(listModel);
             this.boardStateJList.updateUI();
