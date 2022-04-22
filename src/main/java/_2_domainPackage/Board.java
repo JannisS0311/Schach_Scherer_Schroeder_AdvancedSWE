@@ -254,8 +254,18 @@ public class Board {
         changeBoard(oldLocation, newLocation);
     }
 
-    public void saveBoardState(BoardState boardState){
-        this.boardStates.add(boardState);
+    public Square[][] getCurrentBoardState(){
+        final Square[][] currentSquares = new Square[9][0];
+        for (int i = 0; i < 9; i++) {
+            currentSquares[i] = Arrays.copyOf(squares[i], squares[i].length);
+        }
+        return currentSquares;
+    }
+
+    public BoardState saveBoardState(Color turn){
+        BoardState currentBoardState = new BoardState(getCurrentBoardState(), turn);
+        this.boardStates.add(currentBoardState);
+        return currentBoardState;
     }
 
     public void setBoardState(int i){
@@ -279,13 +289,4 @@ public class Board {
     public List<BoardState> getBoardStates() {
         return boardStates;
     }
-
-    public Square[][] getCurrentBoardState(){
-        final Square[][] currentSquares = new Square[9][0];
-        for (int i = 0; i < 9; i++) {
-            currentSquares[i] = Arrays.copyOf(squares[i], squares[i].length);
-        }
-        return currentSquares;
-    }
-
 }

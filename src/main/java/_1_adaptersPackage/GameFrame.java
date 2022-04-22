@@ -121,7 +121,7 @@ public class GameFrame extends JFrame implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 if (boardStateJList.getSelectedIndex() != -1) {
                     board.setBoardState(boardStateJList.getSelectedIndex());
-                    updateTilesFromBoardState(board.getBoardStates().get(boardStateJList.getSelectedIndex()));
+                    updateTiles();
                     game.setTurn(board.getBoardStates().get(boardStateJList.getSelectedIndex()).getTurn());
                     boardStateJList.clearSelection();
                 }
@@ -193,14 +193,14 @@ public class GameFrame extends JFrame implements ActionListener {
         this.add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void updateTilesFromBoardState(BoardState boardState){
+    private void updateTilesFromBoardState(int index){
         mainPanel.removeAll();
         mainPanel.revalidate();
         mainPanel.repaint();
         mainPanel.setLayout(new GridLayout(9, 9));
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                mainPanel.add(boardState.getSquare(row, col));
+                mainPanel.add(board.getBoardStates().get(index).getSquare(row, col));
             }
         }
         this.add(mainPanel, BorderLayout.CENTER);
@@ -277,10 +277,7 @@ public class GameFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveBoardStateButton){
-            BoardState currentBoardState = new BoardState(this.board.getCurrentBoardState(), this.game.getTurn());
-            this.board.saveBoardState(currentBoardState);
-            System.out.println(currentBoardState.getTurn());
-            this.listModel.addElement(currentBoardState + Integer.toString(this.board.getBoardStates().size()));
+            this.listModel.addElement(board.saveBoardState(game.getTurn()) + Integer.toString(this.board.getBoardStates().size()));
             this.boardStateJList.setModel(listModel);
             this.boardStateJList.updateUI();
         }
