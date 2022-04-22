@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameFrame extends JFrame implements ActionListener {
+public class GameFrame extends JFrame {
 
     private Board board;
     private Game game;
@@ -132,7 +132,14 @@ public class GameFrame extends JFrame implements ActionListener {
         sideBottomPanel.add(listScroller);
 
         saveBoardStateButton = new JButton("Save Board State");
-        saveBoardStateButton.addActionListener(this);
+        saveBoardStateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listModel.addElement(board.saveBoardState() + Integer.toString(board.getBoardStates().size()));
+                boardStateJList.setModel(listModel);
+                boardStateJList.updateUI();
+            }
+        });
         sideBottomPanel.add(saveBoardStateButton);
 
         JPanel sideBottomBottomPanel = new JPanel();
@@ -260,12 +267,4 @@ public class GameFrame extends JFrame implements ActionListener {
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.saveBoardStateButton){
-            this.listModel.addElement(board.saveBoardState() + Integer.toString(this.board.getBoardStates().size()));
-            this.boardStateJList.setModel(listModel);
-            this.boardStateJList.updateUI();
-        }
-    }
 }
