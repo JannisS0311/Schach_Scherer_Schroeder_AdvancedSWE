@@ -4,7 +4,6 @@ import java.awt.*;
 
 public class Game {
 
-    private Color turn;
     private Boolean running;
     private Location lastMoveTarget;
     private Location lastMoveOrigin;
@@ -18,7 +17,6 @@ public class Game {
 
     public Game(){
         this.running = true;
-        this.turn = Color.WHITE;
     }
 
     public Location getLastMoveTarget() {
@@ -41,15 +39,7 @@ public class Game {
         return running;
     }
 
-    public Color getTurn(){
-        return turn;
-    }
-
     public void setRunning(Boolean running) {
         this.running = running;
-    }
-
-    public void setTurn(Color turn) {
-        this.turn = turn;
     }
 }

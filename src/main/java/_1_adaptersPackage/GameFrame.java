@@ -122,7 +122,6 @@ public class GameFrame extends JFrame implements ActionListener {
                 if (boardStateJList.getSelectedIndex() != -1) {
                     board.setBoardState(boardStateJList.getSelectedIndex());
                     updateTiles();
-                    game.setTurn(board.getBoardStates().get(boardStateJList.getSelectedIndex()).getTurn());
                     boardStateJList.clearSelection();
                 }
             }
@@ -193,24 +192,11 @@ public class GameFrame extends JFrame implements ActionListener {
         this.add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void updateTilesFromBoardState(int index){
-        mainPanel.removeAll();
-        mainPanel.revalidate();
-        mainPanel.repaint();
-        mainPanel.setLayout(new GridLayout(9, 9));
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                mainPanel.add(board.getBoardStates().get(index).getSquare(row, col));
-            }
-        }
-        this.add(mainPanel, BorderLayout.CENTER);
-    }
-
     private void setTurn() {
-        if (game.getTurn() == Color.WHITE){
-            game.setTurn(Color.BLACK);
+        if (board.getTurn() == Color.WHITE){
+            board.setTurn(Color.BLACK);
         }else {
-            game.setTurn(Color.WHITE);
+            board.setTurn(Color.WHITE);
         }
     }
 
@@ -221,7 +207,7 @@ public class GameFrame extends JFrame implements ActionListener {
     }
 
     private void enterScore(){
-        if (game.getTurn() == Color.WHITE){
+        if (board.getTurn() == Color.WHITE){
             playerTwo.setScore(playerTwo.getScore()+1);
         }else {
             playerOne.setScore(playerOne.getScore()+1);
@@ -277,7 +263,7 @@ public class GameFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveBoardStateButton){
-            this.listModel.addElement(board.saveBoardState(game.getTurn()) + Integer.toString(this.board.getBoardStates().size()));
+            this.listModel.addElement(board.saveBoardState() + Integer.toString(this.board.getBoardStates().size()));
             this.boardStateJList.setModel(listModel);
             this.boardStateJList.updateUI();
         }

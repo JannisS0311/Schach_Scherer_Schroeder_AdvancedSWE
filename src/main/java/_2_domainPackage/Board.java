@@ -14,6 +14,7 @@ public class Board {
     private static final String[] pieceOrder = {null, "Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
     private final Square[][] squares = new Square[9][9];
     private List<BoardState> boardStates = new ArrayList<>();
+    Color turn = Color.WHITE;
 
     /**
      * 0    1 2 3 4 5 6 7 8
@@ -101,7 +102,7 @@ public class Board {
         Piece chosenPiece = oldTile.getPiece();
 
         ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
-        //TODO neue Klasse Move einführen?
+
         if (
                 game.getRunning()
                 &&playersTurn(chosenPiece, game)
@@ -230,7 +231,7 @@ public class Board {
     }
 
     private boolean playersTurn(Piece piece, Game game){
-        return piece.getPieceColor() == game.getTurn();
+        return piece.getPieceColor() == turn;
     }
 
     public void disappearPiece(Location oldLocation){
@@ -262,13 +263,14 @@ public class Board {
         return currentSquares;
     }
 
-    public BoardState saveBoardState(Color turn){
-        BoardState currentBoardState = new BoardState(getCurrentBoardState(), turn);
+    public BoardState saveBoardState(){
+        BoardState currentBoardState = new BoardState(getCurrentBoardState(), this.turn);
         this.boardStates.add(currentBoardState);
         return currentBoardState;
     }
 
     public void setBoardState(int i){
+        turn = boardStates.get(i).getTurn();
         for (int rowCounter = 0; rowCounter < 9; rowCounter++) {
             for (int columnCounter = 0; columnCounter < 9; columnCounter++) {
                 Tile storedTile = boardStates.get(i).getSquare(rowCounter, columnCounter).getTile();
@@ -288,5 +290,13 @@ public class Board {
 
     public List<BoardState> getBoardStates() {
         return boardStates;
+    }
+
+    public Color getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Color turn) {
+        this.turn = turn;
     }
 }
