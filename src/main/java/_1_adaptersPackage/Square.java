@@ -10,13 +10,14 @@ public class Square extends JLabel {
     private Tile tile = null;
 
     private String labeling;
+    private final Dimension dimension = new Dimension(20,20);
 
 
     public Square(Tile tile) {
         this.tile = tile;
         this.setBackground(tile.getBackgroundColor());
         this.setIcon(tile.getIcon());
-        this.setMinimumSize(new Dimension(20, 20));
+        this.setMinimumSize(dimension);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.setOpaque(true);
     }
@@ -28,7 +29,7 @@ public class Square extends JLabel {
         this.setText(labeling);
         this.setFont(this.getFont().deriveFont(18f));
 
-        this.setMinimumSize(new Dimension(20, 20));
+        this.setMinimumSize(dimension);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.setOpaque(true);
     }
