@@ -2,6 +2,8 @@ package _2_domainPackage;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Queen implements Piece {
 
@@ -9,6 +11,7 @@ public class Queen implements Piece {
     Board board;
     Color pieceColor;
     private boolean hasMoved;
+    private UUID id = UUID.randomUUID();
 
     public Queen(Tile actualTile, Board board, Color pieceColor) {
         this.actualTile = actualTile;
@@ -70,6 +73,19 @@ public class Queen implements Piece {
     @Override
     public void setEnPassant(boolean enPassant) {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Queen queen = (Queen) o;
+        return id.equals(queen.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     private ArrayList<Location> getTilesInBetweenStraight(Location oldLocation, Location newLocation) {
