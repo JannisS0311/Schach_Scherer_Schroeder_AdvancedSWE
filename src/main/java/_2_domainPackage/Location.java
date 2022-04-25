@@ -2,7 +2,7 @@ package _2_domainPackage;
 
 import java.util.Objects;
 
-public class Location {
+public final class Location {
 
     private final int rowCoordinate;
     private final int columnCoordinate;
