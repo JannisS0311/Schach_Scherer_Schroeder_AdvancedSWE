@@ -10,11 +10,10 @@ import java.util.Objects;
 
 public class Board {
 
-    private static final int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 8; //columns of the board
     private static final String[] pieceOrder = {null, "Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
     private final Square[][] squares = new Square[9][9];
-    private List<BoardState> boardStates = new ArrayList<>();
     Color turn = Color.WHITE;
+    private List<BoardState> boardStates = new ArrayList<>();
 
     /**
      * 0    1 2 3 4 5 6 7 8
@@ -26,7 +25,7 @@ public class Board {
      * 6	. . . . . . . .
      * 7	P P P P P P P P
      * 8    R N B Q K B N R
-     *
+     * <p>
      * P=pawn, K=king, Q=queen, R=rook, N=knight, B=Bishop
      * Uppercase is white
      **/
@@ -35,9 +34,16 @@ public class Board {
         this.fillBoardInitially();
     }
 
+    public Color getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Color turn) {
+        this.turn = turn;
+    }
+
     private void fillBoardInitially() {
         fillColumnLabeling();
-        // fill the white pieces initially:
         fillAllPiecesInitially("BLACK");
         // fill the empty spaces:
         for (int row = 3; row < 7; row++) {
@@ -48,14 +54,13 @@ public class Board {
                         new Square(new Tile(null, null, this, new Location(row, col)));
             }
         }
-        // fill the black pieces initially
         fillAllPiecesInitially("WHITE");
     }
 
-    private void fillColumnLabeling(){
+    private void fillColumnLabeling() {
         squares[0][0] = new Square("");
         for (int col = 1; col < 9; col++) {
-            squares[0][col] = new Square(String.valueOf((char) (col+96)));
+            squares[0][col] = new Square(String.valueOf((char) (col + 96)));
         }
     }
 
@@ -67,7 +72,6 @@ public class Board {
             fillLineWithPawnsInitially(pieceColor);
             fillLineWithTilesExceptPawnsInitially(pieceColor);
         }
-
     }
 
     private void fillLineWithPawnsInitially(String pieceColor) {
@@ -84,9 +88,7 @@ public class Board {
 
     private void fillLineWithTilesExceptPawnsInitially(String pieceColor) {
         int rowNumber = 8;
-        if (pieceColor == "BLACK") {
-            rowNumber = 1;
-        }
+        if (pieceColor == "BLACK") rowNumber = 1;
         squares[rowNumber][0] =
                 new Square(String.valueOf(rowNumber));
         for (int columnCounter = 1; columnCounter < 9; columnCounter++) {
@@ -95,6 +97,10 @@ public class Board {
     }
 
     ///////////////////////////////////////////////
+
+    public Square getSquareFromLocation(Location location) {
+        return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
+    }
 
     public boolean movePiece(Location oldLocation, Location newLocation, Game game) {
         Tile oldTile = getSquareFromLocation(oldLocation).getTile();
@@ -105,73 +111,30 @@ public class Board {
 
         if (
                 game.getRunning()
-                &&playersTurn(chosenPiece, game)
-                &&validNewLocation(newLocation)
-                && areLocationsEmpty(tilesInBetween)
-                && chosenPiece.isMoveOkay(oldTile, newTile)
-                && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
-            )
-        {
+                        && playersTurn(chosenPiece)
+                        && validNewLocation(newLocation)
+                        && areLocationsEmpty(tilesInBetween)
+                        && chosenPiece.isMoveOkay(oldTile, newTile)
+                        && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
+        ) {
             changeBoard(oldLocation, newLocation);
             chosenPiece.setHasMoved();
             resetEnPassant(chosenPiece.getPieceColor(), newTile);
-            checkQueen(oldLocation, newLocation);
+            checkQueen(newLocation);
             return true;
         }
         return false;
     }
 
-    private void checkQueen(Location oldLocation, Location newLocation){
-        if ((newLocation.getRowCoordinate() == 1 || newLocation.getRowCoordinate() == 8)
-            && Objects.equals(this.getSquareFromLocation(newLocation).getTile().getPieceType(), "Pawn")
-            ){
-            this.makeQueen(newLocation);
-        }
+    private boolean playersTurn(Piece piece) {
+        return piece.getPieceColor() == turn;
     }
 
-    private void resetEnPassant(Color pieceColor, Tile newTile) {
-        int row = 4;
-        Location currLocation;
-
-        if (pieceColor == Color.WHITE){
-            row = 5;
-        }
-        for (int i = 1; i<9;i++){
-            currLocation = new Location(row, i);
-            Tile currTile = this.getSquareFromLocation(currLocation).getTile();
-            if (Objects.equals(currTile.getPieceType(), "Pawn")
-                && !currTile.getLocation().equals(newTile.getLocation())
-            ){
-                Pawn enPassantPawn = (Pawn) this.getSquareFromLocation(currLocation).getTile().getPiece();
-                enPassantPawn.setEnPassant(false);
-            }
-        }
+    private boolean validNewLocation(Location newLocation) {
+        int row = newLocation.getRowCoordinate();
+        int column = newLocation.getColumnCoordinate();
+        return row >= 1 && row <= 8 && column >= 1 && column <= 8;
     }
-
-    public void checkGameOver(Game game, String pieceType) {
-        if (pieceType == "King"){
-            game.setRunning(false);
-        }
-    }
-
-    public Square getSquareFromLocation(Location location) {
-        return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
-    }
-
-    private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile, Game game) {
-        String attackingPieceColor = oldTile.getPieceColorAsString();
-        String beatenPieceColor = newTile.getPieceColorAsString();
-        String beatenPieceType = newTile.getPieceType();
-
-        if ((beatenPieceColor != null) && !(attackingPieceColor.equals(beatenPieceColor))){
-            this.checkGameOver(game,beatenPieceType);
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    //TODO neue Klasse move einführen?
 
     public boolean areLocationsEmpty(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
@@ -179,31 +142,23 @@ public class Board {
                 return false;
         }
         return true;
+    }
 
-        /*
-        return locations.stream()
-            .map(location -> {
-                return getTileFromLocation(location);
-            })
-            .allMatch(tile -> {
-                return tile.isEmpty();
-            })
-        ;
-        */
+    private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile, Game game) {
+        String attackingPieceColor = oldTile.getPieceColorAsString();
+        String beatenPieceColor = newTile.getPieceColorAsString();
+        String beatenPieceType = newTile.getPieceType();
 
-        /*
-        return locations.stream()
-                .map(this::getTileFromLocation)
-                .allMatch(Tile::isEmpty);
-        */
-
-        /*
-        for(Location location : locations) {
-            if(!getTileFromLocation(location).isEmpty())
-                return false;
+        if ((beatenPieceColor != null) && !(attackingPieceColor.equals(beatenPieceColor))) {
+            this.checkGameOver(game, beatenPieceType);
+            return true;
+        } else {
+            return false;
         }
-        return true;
-        */
+    }
+
+    public void checkGameOver(Game game, String pieceType) {
+        if (pieceType == "King") game.setRunning(false);
     }
 
     public void changeBoard(Location oldLocation, Location newLocation) {
@@ -224,24 +179,29 @@ public class Board {
                 oldLocation));
     }
 
-    private boolean validNewLocation(Location newLocation) {
-        int row = newLocation.getRowCoordinate();
-        int column = newLocation.getColumnCoordinate();
-        return row >= 1 && row <= 8 && column >= 1 && column <= 8;
+    private void resetEnPassant(Color pieceColor, Tile newTile) {
+        int row = 4;
+        if (pieceColor == Color.WHITE) row = 5;
+        Location currLocation;
+        Tile currTile;
+        for (int i = 1; i < 9; i++) {
+            currLocation = new Location(row, i);
+            currTile = this.getSquareFromLocation(currLocation).getTile();
+            if (Objects.equals(currTile.getPieceType(), "Pawn")
+                    && !currTile.getLocation().equals(newTile.getLocation())
+            ) {
+                Pawn enPassantPawn = (Pawn) this.getSquareFromLocation(currLocation).getTile().getPiece();
+                enPassantPawn.setEnPassant(false);
+            }
+        }
     }
 
-    private boolean playersTurn(Piece piece, Game game){
-        return piece.getPieceColor() == turn;
-    }
-
-    public void disappearPiece(Location oldLocation){
-        int oldRow = oldLocation.getRowCoordinate();
-        int oldCol = oldLocation.getColumnCoordinate();
-
-        this.squares[oldRow][oldCol] = new Square(new Tile(null,
-                null,
-                this,
-                oldLocation));
+    private void checkQueen(Location newLocation) {
+        if ((newLocation.getRowCoordinate() == 1 || newLocation.getRowCoordinate() == 8)
+                && Objects.equals(this.getSquareFromLocation(newLocation).getTile().getPieceType(), "Pawn")
+        ) {
+            this.makeQueen(newLocation);
+        }
     }
 
     public void makeQueen(Location newLocation) {
@@ -251,11 +211,23 @@ public class Board {
                 newLocation));
     }
 
-    public void moveBack(Location oldLocation, Location newLocation){
+    public void moveBack(Location oldLocation, Location newLocation) {
         changeBoard(oldLocation, newLocation);
     }
 
-    public Square[][] getCurrentBoardState(){
+    public void disappearPiece(Location oldLocation) {
+        int oldRow = oldLocation.getRowCoordinate();
+        int oldCol = oldLocation.getColumnCoordinate();
+
+        this.squares[oldRow][oldCol] = new Square(new Tile(null,
+                null,
+                this,
+                oldLocation));
+    }
+
+    ////////////////////////////////
+
+    public Square[][] getCurrentBoardState() {
         final Square[][] currentSquares = new Square[9][0];
         for (int i = 0; i < 9; i++) {
             currentSquares[i] = Arrays.copyOf(squares[i], squares[i].length);
@@ -263,13 +235,13 @@ public class Board {
         return currentSquares;
     }
 
-    public BoardState saveBoardState(){
+    public BoardState saveBoardState() {
         BoardState currentBoardState = new BoardState(getCurrentBoardState(), this.turn);
         this.boardStates.add(currentBoardState);
         return currentBoardState;
     }
 
-    public void setBoardState(int i){
+    public void setBoardState(int i) {
         turn = boardStates.get(i).getTurn();
         for (int rowCounter = 0; rowCounter < 9; rowCounter++) {
             for (int columnCounter = 0; columnCounter < 9; columnCounter++) {
@@ -292,11 +264,4 @@ public class Board {
         return boardStates;
     }
 
-    public Color getTurn() {
-        return turn;
-    }
-
-    public void setTurn(Color turn) {
-        this.turn = turn;
-    }
 }
