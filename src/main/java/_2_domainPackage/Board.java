@@ -253,7 +253,7 @@ public class Board {
                             storedTile.getPiece()));
                     continue;
                 }
-                Square storedSquare = boardStates.get(i).getSquare(rowCounter, columnCounter);
+                Square storedSquare = (Square) boardStates.get(i).getSquare(rowCounter, columnCounter);
                 this.squares[rowCounter][columnCounter] = new Square(storedSquare.getLabeling());
             }
         }

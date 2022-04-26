@@ -1,11 +1,12 @@
 package _1_adaptersPackage;
 
+import _2_domainPackage.FourSided;
 import _2_domainPackage.Tile;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Square extends JLabel {
+public class Square extends JLabel implements FourSided {
 
     private Tile tile = null;
 
@@ -34,14 +35,17 @@ public class Square extends JLabel {
         this.setOpaque(true);
     }
 
+    @Override
     public Tile getTile() {
         return tile;
     }
 
+    @Override
     public void setTile(Tile tile) {
         this.tile = tile;
     }
 
+    @Override
     public String getLabeling() {
         return labeling;
     }
