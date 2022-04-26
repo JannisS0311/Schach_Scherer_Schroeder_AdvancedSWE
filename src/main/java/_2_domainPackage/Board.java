@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class Board {
 
-    private static final String[] pieceOrder = {null, "Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
     private final Square[][] squares = new Square[9][9];
     Color turn = Color.WHITE;
     private List<BoardState> boardStates = new ArrayList<>();
@@ -92,7 +91,7 @@ public class Board {
         squares[rowNumber][0] =
                 new Square(String.valueOf(rowNumber));
         for (int columnCounter = 1; columnCounter < 9; columnCounter++) {
-            squares[rowNumber][columnCounter] = new Square(new Tile(pieceOrder[columnCounter], pieceColor, Board.this, new Location(rowNumber, columnCounter)));
+            squares[rowNumber][columnCounter] = new Square(new Tile(PieceOrder.values()[columnCounter].getName(), pieceColor, Board.this, new Location(rowNumber, columnCounter)));
         }
     }
 
