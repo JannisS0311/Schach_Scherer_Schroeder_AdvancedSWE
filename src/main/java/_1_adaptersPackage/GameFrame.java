@@ -35,7 +35,6 @@ public class GameFrame extends JFrame {
     }
 
     public void init() {
-        //this.setLayout(new GridLayout(9, 9));
         this.setSize(new Dimension(750, 650));
         this.setLayout(new BorderLayout());
 

@@ -137,10 +137,10 @@ public class Board {
 
     public boolean areLocationsEmpty(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
-            if (!getSquareFromLocation(locations.get(i)).getTile().isEmpty())
-                return false;
+            if (getSquareFromLocation(locations.get(i)).getTile().isEmpty())
+                return true;
         }
-        return true;
+        return false;
     }
 
     private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile, Game game) {

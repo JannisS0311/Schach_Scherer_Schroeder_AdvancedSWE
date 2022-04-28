@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 public interface Piece {
 
-    String imagePath = "src/main/resources/chesspieces/";
-
     boolean isMoveOkay(Tile oldTile, Tile newTile);
 
     ArrayList<Location> areTilesBetweenEmpty(Location oldLocation, Location newLocation);
@@ -18,14 +16,5 @@ public interface Piece {
 
     boolean getEnPassant();
     void setEnPassant(boolean enPassant);
-    
-    private boolean areTilesBetweenEmtpy(ArrayList<Tile> tilesBetween){
-        for (Tile tile: tilesBetween
-        ) {
-            if(!(tile.isEmpty()))
-                return false;
-        }
-        return true;
-    };
 
 }

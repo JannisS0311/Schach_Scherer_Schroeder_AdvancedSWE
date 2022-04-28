@@ -16,7 +16,6 @@ public class King implements Piece {
         this.board = board;
         this.pieceColor = pieceColor;
         this.hasMoved = false;
-        //this.fillCheckableFields();
     }
 
     private void fillCheckableFields(){

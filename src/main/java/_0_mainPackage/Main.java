@@ -12,6 +12,5 @@ public class Main {
         Game game = new Game();
         GameFrame gameFrame = new GameFrame(board, game);
         gameFrame.init();
-        //gameFrame.play();
     }
 }
