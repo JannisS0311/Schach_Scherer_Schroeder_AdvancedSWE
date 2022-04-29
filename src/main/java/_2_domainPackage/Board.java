@@ -98,31 +98,41 @@ public class Board {
     ///////////////////////////////////////////////
 
     public Square getSquareFromLocation(Location location) {
-        return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
+        try{
+            return squares[location.getRowCoordinate()][location.getColumnCoordinate()];
+        }
+        catch(ArrayIndexOutOfBoundsException ioobe){
+            return null;
+        }
     }
 
-    public boolean movePiece(Location oldLocation, Location newLocation, Game game) {
-        Tile oldTile = getSquareFromLocation(oldLocation).getTile();
-        Tile newTile = getSquareFromLocation(newLocation).getTile();
-        Piece chosenPiece = oldTile.getPiece();
+    public boolean movePiece(Location oldLocation, Location newLocation, Game game){
+        try{
+            Tile oldTile = getSquareFromLocation(oldLocation).getTile();
+            Tile newTile = getSquareFromLocation(newLocation).getTile();
+            Piece chosenPiece;
 
-        ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
+            chosenPiece =  oldTile.getPiece();
 
-        if (
-                game.getRunning()
-                        && playersTurn(chosenPiece)
-                        && validNewLocation(newLocation)
-                        && areLocationsEmpty(tilesInBetween)
-                        && chosenPiece.isMoveOkay(oldTile, newTile)
-                        && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
-        ) {
-            changeBoard(oldLocation, newLocation);
-            chosenPiece.setHasMoved();
-            resetEnPassant(chosenPiece.getPieceColor(), newTile);
-            checkQueen(newLocation);
-            return true;
+            ArrayList<Location> tilesInBetween = chosenPiece.areTilesBetweenEmpty(oldLocation, newLocation);
+            if (game.getRunning()
+                    && playersTurn(chosenPiece)
+                    && validNewLocation(newLocation)
+                    && areLocationsEmpty(tilesInBetween)
+                    && chosenPiece.isMoveOkay(oldTile, newTile)
+                    && (newTile.isEmpty() || newTileHasEnemiesPiece(oldTile, newTile, game))
+            ) {
+                changeBoard(oldLocation, newLocation);
+                chosenPiece.setHasMoved();
+                resetEnPassant(chosenPiece.getPieceColor(), newTile);
+                checkQueen(newLocation);
+                return true;
+            }
+            return false;
         }
-        return false;
+        catch (NullPointerException nex){
+            return false;
+        }
     }
 
     private boolean playersTurn(Piece piece) {
@@ -137,10 +147,9 @@ public class Board {
 
     public boolean areLocationsEmpty(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
-            if (getSquareFromLocation(locations.get(i)).getTile().isEmpty())
-                return true;
+            if (!getSquareFromLocation(locations.get(i)).getTile().isEmpty()) return false;
         }
-        return false;
+        return true;
     }
 
     private boolean newTileHasEnemiesPiece(Tile oldTile, Tile newTile, Game game) {

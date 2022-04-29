@@ -22,6 +22,7 @@ public class GameFrame extends JFrame {
     private ListSelectionModel listSelectionModel;
     private DefaultListModel listModel;
     private JButton saveBoardStateButton;
+    private JLabel whichTurn = new JLabel("Turn: White");
 
     private final JPanel mainPanel = new JPanel();
     private final JPanel sidePanel = new JPanel();
@@ -53,7 +54,7 @@ public class GameFrame extends JFrame {
         sidePanel.setLayout(new BorderLayout());
 
         JPanel sideTopPanel = new JPanel();
-        sideTopPanel.setLayout(new GridLayout(4,2));
+        sideTopPanel.setLayout(new GridLayout(5,2));
         sideTopPanel.setPreferredSize(new Dimension(150, 150));
         JLabel oldRowL = new JLabel("Old row:");
         JLabel oldColL = new JLabel("Old col:");
@@ -65,6 +66,8 @@ public class GameFrame extends JFrame {
         JTextField newRowT = new JTextField(2);
         JTextField newColT = new JTextField(2);
 
+        sideTopPanel.add(this.whichTurn);
+        sideTopPanel.add(new JLabel());
         sideTopPanel.add(oldRowL);
         sideTopPanel.add(oldColL);
         sideTopPanel.add(oldRowT);
@@ -81,19 +84,35 @@ public class GameFrame extends JFrame {
         submit.addActionListener(e -> {
             int oldY, oldX, newY, newX;
 
-            oldY = Integer.parseInt(oldRowT.getText());
-            oldX = Integer.parseInt(oldColT.getText());
-            newY = Integer.parseInt(newRowT.getText());
-            newX = Integer.parseInt(newColT.getText());
+            try {
+                oldY = Integer.parseInt(oldRowT.getText());
+                oldX = Integer.parseInt(oldColT.getText());
+                newY = Integer.parseInt(newRowT.getText());
+                newX = Integer.parseInt(newColT.getText());
 
-            oldRowT.setText("");
-            oldColT.setText("");
-            newRowT.setText("");
-            newColT.setText("");
+                oldRowT.setText("");
+                oldColT.setText("");
+                newRowT.setText("");
+                newColT.setText("");
 
-            oldRowT.requestFocusInWindow();
+                oldRowT.requestFocusInWindow();
 
-            move(oldY, oldX, newY, newX);
+                move(oldY, oldX, newY, newX);
+
+                whichTurn.setText("Turn: White");
+                if (board.getTurn() == Color.BLACK) whichTurn.setText("Turn: Black");
+            }
+            catch (NumberFormatException nex){
+                oldRowT.setText("");
+                oldColT.setText("");
+                newRowT.setText("");
+                newColT.setText("");
+
+                oldRowT.requestFocusInWindow();
+
+                loggingFrame.append("\nPlease try valid numbers");
+            }
+
         });
 
         sideCenterPanel.add(submit);
@@ -122,6 +141,10 @@ public class GameFrame extends JFrame {
                     board.setBoardState(boardStateJList.getSelectedIndex());
                     updateTiles();
                     boardStateJList.clearSelection();
+                    whichTurn.setText("Turn: Black");
+                    if (board.getTurn() == Color.WHITE){
+                        whichTurn.setText("Turn: White");
+                    }
                 }
             }
         });
@@ -131,13 +154,10 @@ public class GameFrame extends JFrame {
         sideBottomPanel.add(listScroller);
 
         saveBoardStateButton = new JButton("Save Board State");
-        saveBoardStateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listModel.addElement(board.saveBoardState() + Integer.toString(board.getBoardStates().size()));
-                boardStateJList.setModel(listModel);
-                boardStateJList.updateUI();
-            }
+        saveBoardStateButton.addActionListener(e -> {
+            listModel.addElement(board.saveBoardState() + Integer.toString(board.getBoardStates().size()));
+            boardStateJList.setModel(listModel);
+            boardStateJList.updateUI();
         });
         sideBottomPanel.add(saveBoardStateButton);
 
